@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "955373349285",
+    "firebase_url": "https://on7lab.firebaseio.com",
+    "project_id": "on7lab",
+    "storage_bucket": "on7lab.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:955373349285:android:bcfb134e029914b7",
+        "android_client_info": {
+          "package_name": "com.github.on7labs"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "955373349285-s2se83ghr9vukbd292uo5r4301ke80jm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.github.on7labs",
+            "certificate_hash": "59c5881789c9698e0f51ec8fd8888ce92ab96c64"
+          }
+        },
+        {
+          "client_id": "955373349285-nrm21d5qanqo9o1tguqer5aregvdtlhl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB2L_2IZr18cYJ2Ft0YtdV0a4sM2zitY4g"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "955373349285-nrm21d5qanqo9o1tguqer5aregvdtlhl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
