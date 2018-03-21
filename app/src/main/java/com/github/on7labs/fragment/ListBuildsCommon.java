@@ -73,7 +73,11 @@ public class ListBuildsCommon extends Fragment {
                         model.getDeveloperEmail(),
                         model.getBannerUrl(),
                         model.getDescription(),
-                        model.getRomUrl()
+                        model.getRomUrl(),
+                        model.getStatus(),
+                        model.getVersion(),
+                        model.getCredits(),
+                        model.getSource()
                 );
             }
 

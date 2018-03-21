@@ -62,7 +62,17 @@ public class ListBuildsHolder extends RecyclerView.ViewHolder implements View.On
 
         cardView.setOnClickListener(this);
     }
-    public void bind(String name,String date,String developerName,String developerEmail,String bannerUrl,String description,String romUrl){
+    public void bind(String name,
+                     String date,
+                     String developerName,
+                     String developerEmail,
+                     String bannerUrl,
+                     String description,
+                     String romUrl,
+                     String status,
+                     int version,
+                     String credits,
+                     String source){
         this.name=name;
         this.date=date;
         this.developerEmail=developerEmail;
@@ -79,7 +89,10 @@ public class ListBuildsHolder extends RecyclerView.ViewHolder implements View.On
         DetailActivityIntent.putExtra("developerEmail",developerEmail);
         DetailActivityIntent.putExtra("bannerUrl",bannerUrl);
         DetailActivityIntent.putExtra("description",description);
-        DetailActivityIntent.putExtra("romUrl",romUrl);
+        DetailActivityIntent.putExtra("version",version);
+        DetailActivityIntent.putExtra("credits",credits);
+        DetailActivityIntent.putExtra("status",status);
+        DetailActivityIntent.putExtra("source",source);
 
         textViewDate.setText("Date"+colon+date);
         textViewName.setText("Rom Name"+colon+name);
