@@ -6,6 +6,9 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -17,6 +20,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.github.on7labs.fragment.FragmentHome;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.io.IOException;
@@ -32,11 +36,12 @@ public class MainActivity extends AppCompatActivity
     private String email,name;
     private Uri profileUrl;
     private ImageView imageViewProfile;
+    private Toolbar toolbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -59,6 +64,7 @@ public class MainActivity extends AppCompatActivity
         textViewEmail.setText(email);
         new ProfileTask().execute();
         navigationView.setNavigationItemSelectedListener(this);
+        updateFrame(new FragmentHome(),"Home");
     }
 
     @Override
@@ -93,13 +99,21 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_home) {
-            // Handle the home action
+            updateFrame(new FragmentHome(),"Home");
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+    private void updateFrame(Fragment fragment,String title){
+        toolbar.setTitle(title);
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.content_main,fragment);
+        ft.commit();
+    }
+
     private class ProfileTask extends AsyncTask<Void,Void,Void>{
         private Bitmap bmp;
         @Override
