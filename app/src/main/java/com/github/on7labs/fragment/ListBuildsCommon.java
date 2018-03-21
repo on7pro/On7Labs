@@ -10,12 +10,15 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.github.on7labs.R;
 import com.github.on7labs.holder.ListBuildsHolder;
 import com.github.on7labs.model.ListBuildModel;
+import com.github.on7labs.util.FirebaseProgressBar;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 
@@ -31,6 +34,7 @@ public class ListBuildsCommon extends Fragment {
     private FirebaseRecyclerOptions options;
     private boolean bottom;
     private LinearLayoutManager layoutManager;
+    private View view;
     public ListBuildsCommon(){}
 
     public ListBuildsCommon(String ref){
@@ -41,7 +45,7 @@ public class ListBuildsCommon extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v=inflater.inflate(R.layout.fragment_list_builds,container,false);
-
+        this.view=v;
         lvBuilds = v.findViewById(R.id.rv_list_build);
         query = FirebaseDatabase.getInstance()
                 .getReference(ref);
@@ -73,10 +77,16 @@ public class ListBuildsCommon extends Fragment {
                 );
             }
 
+            @Override
+            public void onDataChanged() {
+                super.onDataChanged();
+                ProgressBar();
+            }
         };
 
         layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        ProgressBar();
         if (bottom)
         {
             layoutManager.setStackFromEnd(true);
@@ -86,7 +96,11 @@ public class ListBuildsCommon extends Fragment {
 
         return v;
     }
-
+    private void ProgressBar(){
+        ProgressBar progressBar= view.findViewById(R.id.pb_builds);
+        TextView textView= view.findViewById(R.id.tv_no_build);
+        new FirebaseProgressBar(progressBar, textView, adapter, ref);
+    }
     @Override
     public void onStart() {
         super.onStart();
