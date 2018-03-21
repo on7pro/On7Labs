@@ -1,5 +1,6 @@
 package com.github.on7labs;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -20,6 +21,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.github.on7labs.activity.LoginActivity;
 import com.github.on7labs.fragment.FragmentHome;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -64,7 +66,7 @@ public class MainActivity extends AppCompatActivity
         textViewEmail.setText(email);
         new ProfileTask().execute();
         navigationView.setNavigationItemSelectedListener(this);
-        updateFrame(new FragmentHome(),"Home");
+        updateFrame(new FragmentHome(),getString(R.string.home));
     }
 
     @Override
@@ -99,7 +101,12 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_home) {
-            updateFrame(new FragmentHome(),"Home");
+            updateFrame(new FragmentHome(),getString(R.string.home));
+        }else if (id==R.id.nav_logout)
+        {
+            firebaseAuth.signOut();
+            startActivity(new Intent(this, LoginActivity.class));
+            finish();
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
