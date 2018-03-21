@@ -89,6 +89,7 @@ public class ListBuildsHolder extends RecyclerView.ViewHolder implements View.On
         DetailActivityIntent.putExtra("developerEmail",developerEmail);
         DetailActivityIntent.putExtra("bannerUrl",bannerUrl);
         DetailActivityIntent.putExtra("description",description);
+        DetailActivityIntent.putExtra("romUrl",romUrl);
         DetailActivityIntent.putExtra("version",version);
         DetailActivityIntent.putExtra("credits",credits);
         DetailActivityIntent.putExtra("status",status);
