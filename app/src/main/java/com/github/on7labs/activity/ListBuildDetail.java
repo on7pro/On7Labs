@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -15,7 +16,12 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.github.on7labs.R;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -38,6 +44,8 @@ public class ListBuildDetail extends AppCompatActivity implements View.OnClickLi
     private Bundle bundle;
     private String colon=" : ";
     private Button btRomUrl;
+    private StorageReference storageReference;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,6 +67,7 @@ public class ListBuildDetail extends AppCompatActivity implements View.OnClickLi
         textViewDescription=findViewById(R.id.tv_description);
         textViewDeveloperEmail=findViewById(R.id.tv_dev_email);
         btRomUrl=findViewById(R.id.bt_rom_download);
+        storageReference =  FirebaseStorage.getInstance().getReference().child(bannerUrl);
 
         textViewDate.setText("Date"+colon+date);
         textViewName.setText("Rom Name"+colon+name);
@@ -80,32 +89,33 @@ public class ListBuildDetail extends AppCompatActivity implements View.OnClickLi
         }
     }
 
-    private class ImageTask extends AsyncTask<Void,Void,Void> {
-        private Bitmap bmp;
+    private class ImageTask extends AsyncTask<String,String,String> {
         @Override
-        protected Void doInBackground(Void... voids) {
-            try {
-                URL url = new URL(bannerUrl);
-                bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
+        protected String doInBackground(String... voids) {
+            storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri uri) {
+                    if (uri.toString()==null)
+                    {
+                        textViewLoadingImage.setVisibility(View.GONE);
+                        imageViewBanner.setImageDrawable(ContextCompat.getDrawable(ListBuildDetail.this, R.drawable.ic_no_thumbnail));
+                    }
+                    else
+                    {
+                        textViewLoadingImage.setVisibility(View.GONE);
+                        Glide.with(ListBuildDetail.this)
+                                .load(uri.toString())
+                                .into(imageViewBanner );
+                    }
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
 
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-            if (bmp==null)
-            {
-                textViewLoadingImage.setVisibility(View.GONE);
-                imageViewBanner.setImageDrawable(ContextCompat.getDrawable(getBaseContext(), R.drawable.ic_no_thumbnail));
-            }else {
-                textViewLoadingImage.setVisibility(View.GONE);
-                imageViewBanner.setImageBitmap(bmp);
-            }
+                }
+            });
+
+            return null;
         }
     }
 }
