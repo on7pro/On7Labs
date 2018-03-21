@@ -93,8 +93,11 @@ public class ListBuildsCommon extends Fragment {
         }
         lvBuilds.setLayoutManager(layoutManager);
         lvBuilds.setAdapter(adapter);
-
-        return v;
+        if (savedInstanceState==null) {
+            return v;
+        }else {
+            return null;
+        }
     }
     private void ProgressBar(){
         ProgressBar progressBar= view.findViewById(R.id.pb_builds);

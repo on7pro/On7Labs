@@ -75,8 +75,28 @@ public class ListBuildDetail extends AppCompatActivity implements View.OnClickLi
         textViewDeveloperEmail.setText("developer email"+colon+developerEmail);
         textViewDescription.setText("description"+colon+"\n"+description);
         btRomUrl.setOnClickListener(this);
-        new ImageTask().execute();
+        storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                if (uri.toString()==null)
+                {
+                    textViewLoadingImage.setVisibility(View.GONE);
+                    imageViewBanner.setImageDrawable(ContextCompat.getDrawable(ListBuildDetail.this, R.drawable.ic_no_thumbnail));
+                }
+                else
+                {
+                    textViewLoadingImage.setVisibility(View.GONE);
+                    Glide.with(ListBuildDetail.this)
+                            .load(uri.toString())
+                            .into(imageViewBanner );
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
 
+            }
+        });
     }
 
     @Override
@@ -86,36 +106,6 @@ public class ListBuildDetail extends AppCompatActivity implements View.OnClickLi
         {
             Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(romUrl));
             startActivity(browserIntent);
-        }
-    }
-
-    private class ImageTask extends AsyncTask<String,String,String> {
-        @Override
-        protected String doInBackground(String... voids) {
-            storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                @Override
-                public void onSuccess(Uri uri) {
-                    if (uri.toString()==null)
-                    {
-                        textViewLoadingImage.setVisibility(View.GONE);
-                        imageViewBanner.setImageDrawable(ContextCompat.getDrawable(ListBuildDetail.this, R.drawable.ic_no_thumbnail));
-                    }
-                    else
-                    {
-                        textViewLoadingImage.setVisibility(View.GONE);
-                        Glide.with(ListBuildDetail.this)
-                                .load(uri.toString())
-                                .into(imageViewBanner );
-                    }
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-
-                }
-            });
-
-            return null;
         }
     }
 }

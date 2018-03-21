@@ -84,7 +84,28 @@ public class ListBuildsHolder extends RecyclerView.ViewHolder implements View.On
         textViewDate.setText("Date"+colon+date);
         textViewName.setText("Rom Name"+colon+name);
         textViewDeveloperName.setText("Developer name"+colon+developerName);
-        new ImageTask().execute();
+        storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                if (uri.toString()==null)
+                {
+                    textViewLoadingImage.setVisibility(View.GONE);
+                    imageViewBanner.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_no_thumbnail));
+                }
+                else
+                {
+                    textViewLoadingImage.setVisibility(View.GONE);
+                    Glide.with(context)
+                            .load(uri.toString())
+                            .into(imageViewBanner );
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+            }
+        });
     }
 
     @Override
@@ -96,33 +117,4 @@ public class ListBuildsHolder extends RecyclerView.ViewHolder implements View.On
         }
     }
 
-    private class ImageTask extends AsyncTask<String,String,String> {
-        @Override
-        protected String doInBackground(String... voids) {
-            storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                @Override
-                public void onSuccess(Uri uri) {
-                    if (uri.toString()==null)
-                    {
-                        textViewLoadingImage.setVisibility(View.GONE);
-                        imageViewBanner.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_no_thumbnail));
-                    }
-                    else
-                    {
-                        textViewLoadingImage.setVisibility(View.GONE);
-                        Glide.with(context)
-                                .load(uri.toString())
-                                .into(imageViewBanner );
-                    }
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-
-                }
-            });
-
-            return null;
-        }
-    }
 }
