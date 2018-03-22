@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -21,16 +22,22 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.github.on7labs.activity.ActivityAddBuild;
 import com.github.on7labs.activity.LoginActivity;
 import com.github.on7labs.fragment.FragmentHome;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener ,View.OnClickListener{
 
     private View NavView;
     private TextView textViewName,textViewEmail;
@@ -39,6 +46,8 @@ public class MainActivity extends AppCompatActivity
     private Uri profileUrl;
     private ImageView imageViewProfile;
     private Toolbar toolbar;
+    private FloatingActionButton floatingActionButtonAddThread;
+    private FirebaseDatabase firebaseDatabase;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +62,7 @@ public class MainActivity extends AppCompatActivity
         toggle.syncState();
 
         firebaseAuth=FirebaseAuth.getInstance();
+        firebaseDatabase=FirebaseDatabase.getInstance();
         name=firebaseAuth.getCurrentUser().getDisplayName();
         email=firebaseAuth.getCurrentUser().getEmail();
         profileUrl=firebaseAuth.getCurrentUser().getPhotoUrl();
@@ -61,12 +71,30 @@ public class MainActivity extends AppCompatActivity
         textViewName=NavView.findViewById(R.id.tv_nav_name);
         textViewEmail=NavView.findViewById(R.id.tv_nav_email);
         imageViewProfile=NavView.findViewById(R.id.nav_imageView);
+        floatingActionButtonAddThread=findViewById(R.id.fab_add_thread);
 
         textViewName.setText(name);
         textViewEmail.setText(email);
         new ProfileTask().execute();
         navigationView.setNavigationItemSelectedListener(this);
         updateFrame(new FragmentHome(),getString(R.string.home));
+        Query query=firebaseDatabase.getReference("Developers").orderByChild("email").equalTo(email);
+        query.keepSynced(true);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+               if (dataSnapshot.exists())
+               {
+                   floatingActionButtonAddThread.setVisibility(View.VISIBLE);
+               }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        floatingActionButtonAddThread.setOnClickListener(this);
     }
 
     @Override
@@ -119,6 +147,15 @@ public class MainActivity extends AppCompatActivity
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.content_main,fragment);
         ft.commit();
+    }
+
+    @Override
+    public void onClick(View view) {
+        int id=view.getId();
+        if (id==floatingActionButtonAddThread.getId())
+        {
+            startActivity(new Intent(MainActivity.this, ActivityAddBuild.class));
+        }
     }
 
     private class ProfileTask extends AsyncTask<Void,Void,Void>{

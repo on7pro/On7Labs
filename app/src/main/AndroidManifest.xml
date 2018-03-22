@@ -22,6 +22,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.ListBuildDetail"/>
+        <activity android:name=".activity.ActivityAddBuild"/>
     </application>
 
 </manifest>
