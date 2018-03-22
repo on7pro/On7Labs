@@ -60,6 +60,19 @@ public class ListBuildModel  {
         this.credits=credits;
     }
 
+    public ListBuildModel(String name,String date,String developerName,String developerEmail,String description,String bannerUrl,Integer version,String status,String romUrl,String source,boolean test){
+        this.bannerUrl=bannerUrl;
+        this.name=name;
+        this.developerEmail=developerEmail;
+        this.developerName=developerName;
+        this.date=date;
+        this.description=description;
+        this.romUrl=romUrl;
+        this.version=version;
+        this.status=status;
+        this.source=source;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
