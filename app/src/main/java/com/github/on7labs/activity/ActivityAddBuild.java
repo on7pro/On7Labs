@@ -63,7 +63,8 @@ public class ActivityAddBuild extends AppCompatActivity implements View.OnClickL
     private boolean fromHolder;
     private Bundle bundle;
     final List<String> iconList = new LinkedList<>(Arrays.asList("AOSP N", "AOSP O", "CrDroid", "Remix OS","Cyanogenmod","Lineage OS","Darkness Redefined"));
-
+    private ImageView imageViewSS1,imageViewSS2,imageViewSS3,imageViewSS4,imageViewSS5;
+    private String selected=null,img1,img2,img3,img4,img5;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,6 +83,12 @@ public class ActivityAddBuild extends AppCompatActivity implements View.OnClickL
         editTextCredits = findViewById(R.id.ed_credits);
         niceSpinnerReleaseStatus = findViewById(R.id.spinner_release_status);
         niceSpinnerReleaseType = findViewById(R.id.spinner_release_type);
+        imageViewSS1=findViewById(R.id.img_ss_1);
+        imageViewSS2=findViewById(R.id.img_ss_2);
+        imageViewSS3=findViewById(R.id.img_ss_3);
+        imageViewSS4=findViewById(R.id.img_ss_4);
+        imageViewSS5=findViewById(R.id.img_ss_5);
+
         final List<String> releaseStatusList = new LinkedList<>(Arrays.asList("Stable", "Beta", "Alpha", "Pre release", "Initial release"));
         final List<String> releaseType = new LinkedList<>(Arrays.asList("Rom", "Recovery", "Kernel", "Mod"));
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
@@ -165,6 +172,30 @@ public class ActivityAddBuild extends AppCompatActivity implements View.OnClickL
         });
         btSubmit.setOnClickListener(this);
         imageViewBanner.setOnClickListener(this);
+        imageViewSS1.setOnClickListener(this);
+        imageViewSS2.setOnClickListener(this);
+        imageViewSS3.setOnClickListener(this);
+        imageViewSS4.setOnClickListener(this);
+        imageViewSS5.setOnClickListener(this);
+    }
+
+    private String SelectScreenShots(final ImageView imageView){
+        FileListerDialog filea = FileListerDialog.createFileListerDialog(this);
+        filea.setFileFilter(FileListerDialog.FILE_FILTER.IMAGE_ONLY);
+        filea.setOnFileSelectedListener(new OnFileSelectedListener() {
+            @Override
+            public void onFileSelected(File file, String path) {
+                Glide.with(getApplicationContext()).load(path).into(imageView);
+                selected=path;
+            }
+        });
+        filea.show();
+        if (selected!=null)
+        {
+            return selected;
+        }else {
+            return null;
+        }
     }
 
     private void SelectBanner(){
@@ -303,5 +334,27 @@ public class ActivityAddBuild extends AppCompatActivity implements View.OnClickL
         } else if (id == imageViewBanner.getId()) {
             SelectBanner();
         }
+        else if (id==imageViewSS1.getId())
+        {
+            img1=SelectScreenShots(imageViewSS1);
+        }
+
+        else if (id==imageViewSS2.getId())
+        {
+            img2=SelectScreenShots(imageViewSS2);
+        }
+        else if (id==imageViewSS3.getId())
+        {
+            img3=SelectScreenShots(imageViewSS3);
+        }
+        else if (id==imageViewSS4.getId())
+        {
+            img4=SelectScreenShots(imageViewSS4);
+        }
+        else if (id==imageViewSS5.getId())
+        {
+            img5=SelectScreenShots(imageViewSS5);
+        }
+
     }
 }
