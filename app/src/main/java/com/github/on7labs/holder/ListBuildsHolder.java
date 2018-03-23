@@ -26,6 +26,7 @@ import com.github.on7labs.activity.ListBuildDetail;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -51,6 +52,7 @@ public class ListBuildsHolder extends RecyclerView.ViewHolder implements View.On
     private String credits;
     private String source;
     private String status;
+    private String key;
     private View v;
     private TextView textViewName,textViewDate,textViewDeveloperName,textViewLoadingImage;
     private ImageView imageViewBanner;
@@ -82,7 +84,8 @@ public class ListBuildsHolder extends RecyclerView.ViewHolder implements View.On
                      String status,
                      int version,
                      String credits,
-                     String source){
+                     String source,
+                     String key){
         this.name=name;
         this.date=date;
         this.developerEmail=developerEmail;
@@ -94,6 +97,7 @@ public class ListBuildsHolder extends RecyclerView.ViewHolder implements View.On
         this.status=status;
         this.credits=credits;
         this.source=source;
+        this.key=key;
         DetailActivityIntent=new Intent(context,ListBuildDetail.class);
         storageReference =  FirebaseStorage.getInstance().getReference().child(bannerUrl);
         if (FirebaseAuth.getInstance().getCurrentUser().getEmail().equals(developerEmail)) {
@@ -174,6 +178,7 @@ public class ListBuildsHolder extends RecyclerView.ViewHolder implements View.On
                                         .putExtra("credits",credits)
                                         .putExtra("status",status)
                                         .putExtra("source",source)
+                                        .putExtra("key",key)
                         );
                     }else if (strName.equals("Delete")) {
                         AlertDialog.Builder builderInner = new AlertDialog.Builder(context);
@@ -182,13 +187,14 @@ public class ListBuildsHolder extends RecyclerView.ViewHolder implements View.On
                         builderInner.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
+                                FirebaseDatabase.getInstance().getReference(ref).child(key).removeValue();
                                 dialog.dismiss();
                             }
                         });
                         builderInner.setNegativeButton("No", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                           dialog.dismiss();
+                                dialog.dismiss();
                             }
                         });
                         builderInner.show();

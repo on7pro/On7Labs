@@ -51,7 +51,7 @@ public class ActivityAddBuild extends AppCompatActivity implements View.OnClickL
     private FirebaseAuth firebaseAuth;
     private FileListerDialog fileListerDialog;
     private int version=0;
-    private String email,name,imgpath="noimg",date,romName,aboutRom,stabilityStatus,url,sourceCode,Credits;
+    private String email,name,imgpath="noimg",date,romName,aboutRom,stabilityStatus,url,sourceCode,Credits,key;
     private EditText editTextName,editTextAboutRom,editTextVersion,editTextUrl,editTextSourceCode,editTextCredits;
     private UploadTask uploadTask;
     private ListBuildModel listBuildModel;
@@ -89,6 +89,7 @@ public class ActivityAddBuild extends AppCompatActivity implements View.OnClickL
             version = bundle.getInt("version");
             stabilityStatus = bundle.getString("status");
             sourceCode = bundle.getString("source");
+            key=bundle.getString("key");
             editTextName.setText(romName);
             editTextAboutRom.setText(aboutRom);
            editTextVersion.setText(String.valueOf(version));
@@ -238,7 +239,13 @@ public class ActivityAddBuild extends AppCompatActivity implements View.OnClickL
                                 listBuildModel = new ListBuildModel(romName, date, name, email, aboutRom, "images/" + uri.getLastPathSegment(), version, stabilityStatus, url);
                             }
 
-                            firebaseDatabase.getReference("Rom").push().setValue(listBuildModel);
+                            if (fromHolder)
+                            {
+                                firebaseDatabase.getReference("Rom").child(key).setValue(listBuildModel);
+                            }else
+                            {
+                                firebaseDatabase.getReference("Rom").push().setValue(listBuildModel);
+                            }
                             finish();
 
                         }

@@ -66,6 +66,7 @@ public class ListBuildsCommon extends Fragment {
             protected void onBindViewHolder(@NonNull ListBuildsHolder holder,
                                             int position,
                                             @NonNull ListBuildModel model) {
+                String key=adapter.getRef(position).getKey();
                 holder.bind(
                         model.getName(),
                         model.getDate(),
@@ -77,7 +78,8 @@ public class ListBuildsCommon extends Fragment {
                         model.getStatus(),
                         model.getVersion(),
                         model.getCredits(),
-                        model.getSource()
+                        model.getSource(),
+                        key
                 );
             }
 
