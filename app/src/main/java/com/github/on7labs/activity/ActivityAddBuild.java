@@ -1,13 +1,18 @@
 package com.github.on7labs.activity;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.WindowManager;
 import android.webkit.URLUtil;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -56,6 +61,7 @@ public class ActivityAddBuild extends AppCompatActivity implements View.OnClickL
     private NiceSpinner niceSpinnerReleaseType;
     private boolean fromHolder;
     private Bundle bundle;
+    final List<String> iconList = new LinkedList<>(Arrays.asList("AOSP N", "AOSP O", "CrDroid", "Remix OS","Cyanogenmod","Lineage OS","Darkness Redefined"));
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -77,6 +83,7 @@ public class ActivityAddBuild extends AppCompatActivity implements View.OnClickL
         niceSpinnerReleaseType = findViewById(R.id.spinner_release_type);
         final List<String> releaseStatusList = new LinkedList<>(Arrays.asList("Stable", "Beta", "Alpha", "Pre release", "Initial release"));
         final List<String> releaseType = new LinkedList<>(Arrays.asList("Rom", "Recovery", "Kernel", "Mod"));
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
         fromHolder = bundle.getBoolean("fromHolder");
         date = DateUtils.getDate();
@@ -165,6 +172,59 @@ public class ActivityAddBuild extends AppCompatActivity implements View.OnClickL
         imageViewBanner.setOnClickListener(this);
     }
 
+    private void SelectBanner(){
+        AlertDialog.Builder builderSingle = new AlertDialog.Builder(this);
+
+        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter(this, android.R.layout.select_dialog_item);
+        arrayAdapter.add("Popular Projects");
+        arrayAdapter.add("Custom");
+        builderSingle.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(final DialogInterface dialog, int which) {
+                String strName = arrayAdapter.getItem(which);
+                if (strName.equals("Custom")) {
+                    fileListerDialog.show();
+                } else if (strName.equals("Popular Projects")) {
+                    final ArrayAdapter<String> arrayInnerAdapter = new ArrayAdapter(ActivityAddBuild.this, android.R.layout.select_dialog_item);
+                    for (int i=0;i<iconList.size();i++)
+                    {
+                        arrayInnerAdapter.add(iconList.get(i));
+                    }
+                    AlertDialog.Builder builderInner = new AlertDialog.Builder(ActivityAddBuild.this);
+                    builderInner.setAdapter(arrayInnerAdapter, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, final int i) {
+                            File localFile = null;
+                            try {
+                                localFile = File.createTempFile("images", "jpg");
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+
+                            final File finalLocalFile = localFile;
+                            firebaseStorage.getReference().child("images/roms/"+iconList.get(i)+".png").getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                                @Override
+                                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                                    Glide.with(getApplicationContext()).load(finalLocalFile).into(imageViewBanner);
+                                    imgpath = finalLocalFile.getAbsolutePath();
+                                    editTextName.setText(iconList.get(i));
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception exception) {
+                                    // Handle any errors
+                                }
+                            });
+
+                        }
+                    });
+                    builderInner.show();
+                }
+            }
+        });
+        builderSingle.show();
+
+    }
 
     private boolean CheckFields() {
         romName = editTextName.getText().toString();
@@ -252,7 +312,7 @@ public class ActivityAddBuild extends AppCompatActivity implements View.OnClickL
                 }
             }
         } else if (id == imageViewBanner.getId()) {
-            fileListerDialog.show();
+            SelectBanner();
         }
     }
 }
