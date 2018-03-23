@@ -66,7 +66,7 @@ public class ActivityAddBuild extends AppCompatActivity implements View.OnClickL
     private Bundle bundle;
     final List<String> iconList = new LinkedList<>(Arrays.asList("AOSP N", "AOSP O", "CrDroid", "Remix OS","Cyanogenmod","Lineage OS","Darkness Redefined"));
     private ImageView imageViewSS1,imageViewSS2,imageViewSS3,imageViewSS4,imageViewSS5;
-    private String selected=null,img1,img2,img3,img4,img5;
+    private String img1=null,img2=null,img3=null,img4=null,img5=null;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -181,7 +181,7 @@ public class ActivityAddBuild extends AppCompatActivity implements View.OnClickL
         imageViewSS5.setOnClickListener(this);
     }
 
-    private String SelectScreenShots(final ImageView imageView){
+    private void SelectScreenShots(final ImageView imageView, final int value){
         FileListerDialog filea = FileListerDialog.createFileListerDialog(this);
         filea.setFileFilter(FileListerDialog.FILE_FILTER.IMAGE_ONLY);
         filea.setOnFileSelectedListener(new OnFileSelectedListener() {
@@ -198,7 +198,28 @@ public class ActivityAddBuild extends AppCompatActivity implements View.OnClickL
                         Glide.with(getApplicationContext()).load(path).into(imageView);
                         btSubmit.setEnabled(true);
                         btSubmit.setProgress(0);
-                        selected="images/screenshots/" + uri.getLastPathSegment();
+                        if(value==1)
+                        {
+                            img1="images/screenshots/" + uri.getLastPathSegment();
+
+                        }else if (value==2)
+                        {
+                            img2="images/screenshots/" + uri.getLastPathSegment();
+
+                        }else if (value==3)
+                        {
+                            img3="images/screenshots/" + uri.getLastPathSegment();
+
+                        }else if (value==4)
+                        {
+                            img4="images/screenshots/" + uri.getLastPathSegment();
+
+                        }else if (value==5)
+                        {
+                            img5="images/screenshots/" + uri.getLastPathSegment();
+
+                        }
+
                         Toast.makeText(ActivityAddBuild.this,"uploaded",Toast.LENGTH_SHORT).show();
                     }
                 }).addOnFailureListener(new OnFailureListener() {
@@ -212,12 +233,7 @@ public class ActivityAddBuild extends AppCompatActivity implements View.OnClickL
             }
         });
         filea.show();
-        if (selected!=null)
-        {
-            return selected;
-        }else {
-            return null;
-        }
+
     }
 
     private void SelectBanner(){
@@ -305,7 +321,7 @@ public class ActivityAddBuild extends AppCompatActivity implements View.OnClickL
 
     @Override
     public void onClick(View view) {
-        int id = view.getId();
+        final int id = view.getId();
         if (id == btSubmit.getId()) {
             if (CheckFields()) {
                 if (URLUtil.isValidUrl(url)) {
@@ -314,6 +330,27 @@ public class ActivityAddBuild extends AppCompatActivity implements View.OnClickL
                     uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            if (img1!=null)
+                            {
+                                screenShots=new ScreenShots(img1);
+                                if (img1!=null && img2!=null)
+                                {
+                                    screenShots=new ScreenShots(img1,img2);
+                                    if (img1!=null && img2!=null && img3!=null)
+                                    {
+                                        screenShots=new ScreenShots(img1,img2,img3);
+                                        if (img1!=null && img2!=null && img3!=null && img4!=null)
+                                        {
+                                            screenShots=new ScreenShots(img1,img2,img3,img4);
+                                            if (img1!=null && img2!=null && img3!=null && img4!=null && img5!=null)
+                                            {
+                                                screenShots=new ScreenShots(img1,img2,img3,img5);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+
                             if (!sourceCode.isEmpty()) {
                                 if (!Credits.isEmpty() && !sourceCode.isEmpty()) {
                                     listBuildModel = new ListBuildModel(romName, date, name, email, aboutRom, "images/" + uri.getLastPathSegment(), version, stabilityStatus, url, Credits, sourceCode,screenShots);
@@ -358,24 +395,24 @@ public class ActivityAddBuild extends AppCompatActivity implements View.OnClickL
         }
         else if (id==imageViewSS1.getId())
         {
-            img1=SelectScreenShots(imageViewSS1);
+            SelectScreenShots(imageViewSS1,1);
         }
 
         else if (id==imageViewSS2.getId())
         {
-            img2=SelectScreenShots(imageViewSS2);
+            SelectScreenShots(imageViewSS2,2);
         }
         else if (id==imageViewSS3.getId())
         {
-            img3=SelectScreenShots(imageViewSS3);
+            SelectScreenShots(imageViewSS3,3);
         }
         else if (id==imageViewSS4.getId())
         {
-            img4=SelectScreenShots(imageViewSS4);
+            SelectScreenShots(imageViewSS4,4);
         }
         else if (id==imageViewSS5.getId())
         {
-            img5=SelectScreenShots(imageViewSS5);
+            SelectScreenShots(imageViewSS5,5);
         }
 
     }
