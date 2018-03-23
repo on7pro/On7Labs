@@ -120,7 +120,7 @@ public class ListBuildsHolder extends RecyclerView.ViewHolder implements View.On
                     imageViewBanner.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_no_thumbnail));
                 } else {
                     textViewLoadingImage.setVisibility(View.GONE);
-                    Glide.with(context)
+                    Glide.with(context.getApplicationContext())
                             .load(uri.toString())
                             .into(imageViewBanner);
                 }
