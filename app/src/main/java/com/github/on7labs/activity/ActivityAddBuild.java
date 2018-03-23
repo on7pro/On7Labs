@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
@@ -109,19 +110,13 @@ public class ActivityAddBuild extends AppCompatActivity implements View.OnClickL
                 editTextCredits.setText(Credits);
             }
             final String path = bundle.getString("bannerUrl");
-            File localFile = null;
-            try {
-                localFile = File.createTempFile("images", "jpg");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            final File finalLocalFile = localFile;
+            Uri uri=Uri.parse(path);
+            final File localFile=new File(getCacheDir()+File.separator,uri.getLastPathSegment() );
             firebaseStorage.getReference().child(path).getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                    Glide.with(getApplicationContext()).load(finalLocalFile).into(imageViewBanner);
-                    imgpath = finalLocalFile.getAbsolutePath();
+                    Glide.with(getApplicationContext()).load(localFile).into(imageViewBanner);
+                    imgpath = localFile.getAbsolutePath();
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
@@ -194,19 +189,13 @@ public class ActivityAddBuild extends AppCompatActivity implements View.OnClickL
                     builderInner.setAdapter(arrayInnerAdapter, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, final int i) {
-                            File localFile = null;
-                            try {
-                                localFile = File.createTempFile("images", "jpg");
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-
-                            final File finalLocalFile = localFile;
-                            firebaseStorage.getReference().child("images/roms/"+iconList.get(i)+".png").getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                            String fname=iconList.get(i)+".png";
+                            final File localFile=new File(getCacheDir()+File.separator, fname);
+                            firebaseStorage.getReference().child("images/roms/"+fname).getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
                                 @Override
                                 public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                                    Glide.with(getApplicationContext()).load(finalLocalFile).into(imageViewBanner);
-                                    imgpath = finalLocalFile.getAbsolutePath();
+                                    Glide.with(getApplicationContext()).load(localFile).into(imageViewBanner);
+                                    imgpath = localFile.getAbsolutePath();
                                     editTextName.setText(iconList.get(i));
                                 }
                             }).addOnFailureListener(new OnFailureListener() {
