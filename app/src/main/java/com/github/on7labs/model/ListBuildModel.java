@@ -16,11 +16,12 @@ public class ListBuildModel {
     private Integer version;
     private String status;
     private String source;
+    private ScreenShots screenShots;
 
     public ListBuildModel() {
     }
 
-    public ListBuildModel(String name, String date, String developerName, String developerEmail, String description, String bannerUrl, Integer version, String status, String romUrl) {
+    public ListBuildModel(String name, String date, String developerName, String developerEmail, String description, String bannerUrl, Integer version, String status, String romUrl,ScreenShots screenShots) {
         this.bannerUrl = bannerUrl;
         this.name = name;
         this.developerEmail = developerEmail;
@@ -30,9 +31,10 @@ public class ListBuildModel {
         this.romUrl = romUrl;
         this.version = version;
         this.status = status;
+        this.screenShots=screenShots;
     }
 
-    public ListBuildModel(String name, String date, String developerName, String developerEmail, String description, String bannerUrl, Integer version, String status, String romUrl, String credits, String source) {
+    public ListBuildModel(String name, String date, String developerName, String developerEmail, String description, String bannerUrl, Integer version, String status, String romUrl, String credits, String source,ScreenShots screenShots) {
         this.bannerUrl = bannerUrl;
         this.name = name;
         this.developerEmail = developerEmail;
@@ -44,9 +46,10 @@ public class ListBuildModel {
         this.status = status;
         this.credits = credits;
         this.source = source;
+        this.screenShots=screenShots;
     }
 
-    public ListBuildModel(String name, String date, String developerName, String developerEmail, String description, String bannerUrl, Integer version, String status, String romUrl, String credits) {
+    public ListBuildModel(String name, String date, String developerName, String developerEmail, String description, String bannerUrl, Integer version, String status, String romUrl, String credits,ScreenShots screenShots) {
         this.bannerUrl = bannerUrl;
         this.name = name;
         this.developerEmail = developerEmail;
@@ -57,9 +60,10 @@ public class ListBuildModel {
         this.version = version;
         this.status = status;
         this.credits = credits;
+        this.screenShots=screenShots;
     }
 
-    public ListBuildModel(String name, String date, String developerName, String developerEmail, String description, String bannerUrl, Integer version, String status, String romUrl, String source, boolean test) {
+    public ListBuildModel(String name, String date, String developerName, String developerEmail, String description, String bannerUrl, Integer version, String status, String romUrl, String source, boolean test,ScreenShots screenShots) {
         this.bannerUrl = bannerUrl;
         this.name = name;
         this.developerEmail = developerEmail;
@@ -70,6 +74,7 @@ public class ListBuildModel {
         this.version = version;
         this.status = status;
         this.source = source;
+        this.screenShots=screenShots;
     }
 
     public void setName(String name) {
@@ -116,6 +121,10 @@ public class ListBuildModel {
         this.status = status;
     }
 
+    public void setScreenShots(ScreenShots screenShots) {
+        this.screenShots = screenShots;
+    }
+
     public String getName() {
         return name;
     }
@@ -158,5 +167,9 @@ public class ListBuildModel {
 
     public Integer getVersion() {
         return version;
+    }
+
+    public ScreenShots getScreenShots() {
+        return screenShots;
     }
 }

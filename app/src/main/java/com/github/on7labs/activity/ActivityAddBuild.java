@@ -22,6 +22,7 @@ import com.bumptech.glide.Glide;
 import com.dd.processbutton.iml.ActionProcessButton;
 import com.github.on7labs.R;
 import com.github.on7labs.model.ListBuildModel;
+import com.github.on7labs.model.ScreenShots;
 import com.github.on7labs.util.DateUtils;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -58,6 +59,7 @@ public class ActivityAddBuild extends AppCompatActivity implements View.OnClickL
     private EditText editTextName, editTextAboutRom, editTextVersion, editTextUrl, editTextSourceCode, editTextCredits;
     private UploadTask uploadTask;
     private ListBuildModel listBuildModel;
+    private ScreenShots screenShots;
     private NiceSpinner niceSpinnerReleaseStatus;
     private NiceSpinner niceSpinnerReleaseType;
     private boolean fromHolder;
@@ -184,9 +186,29 @@ public class ActivityAddBuild extends AppCompatActivity implements View.OnClickL
         filea.setFileFilter(FileListerDialog.FILE_FILTER.IMAGE_ONLY);
         filea.setOnFileSelectedListener(new OnFileSelectedListener() {
             @Override
-            public void onFileSelected(File file, String path) {
-                Glide.with(getApplicationContext()).load(path).into(imageView);
-                selected=path;
+            public void onFileSelected(File file, final String path) {
+                final Uri uri = Uri.fromFile(new File(path));
+                btSubmit.setEnabled(false);
+                btSubmit.setProgress(50);
+                Toast.makeText(ActivityAddBuild.this,"Uploading "+path,Toast.LENGTH_SHORT).show();
+                uploadTask = firebaseStorage.getReference().child("images/screenshots/" + uri.getLastPathSegment()).putFile(uri);
+                uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        Glide.with(getApplicationContext()).load(path).into(imageView);
+                        btSubmit.setEnabled(true);
+                        btSubmit.setProgress(0);
+                        selected="images/screenshots/" + uri.getLastPathSegment();
+                        Toast.makeText(ActivityAddBuild.this,"uploaded",Toast.LENGTH_SHORT).show();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        btSubmit.setEnabled(true);
+                        btSubmit.setProgress(0);
+                        Toast.makeText(ActivityAddBuild.this,"Failed to upload",Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
         filea.show();
@@ -294,20 +316,20 @@ public class ActivityAddBuild extends AppCompatActivity implements View.OnClickL
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                             if (!sourceCode.isEmpty()) {
                                 if (!Credits.isEmpty() && !sourceCode.isEmpty()) {
-                                    listBuildModel = new ListBuildModel(romName, date, name, email, aboutRom, "images/" + uri.getLastPathSegment(), version, stabilityStatus, url, Credits, sourceCode);
+                                    listBuildModel = new ListBuildModel(romName, date, name, email, aboutRom, "images/" + uri.getLastPathSegment(), version, stabilityStatus, url, Credits, sourceCode,screenShots);
                                 } else {
-                                    listBuildModel = new ListBuildModel(romName, date, name, email, aboutRom, "images/" + uri.getLastPathSegment(), version, stabilityStatus, url, sourceCode, false);
+                                    listBuildModel = new ListBuildModel(romName, date, name, email, aboutRom, "images/" + uri.getLastPathSegment(), version, stabilityStatus, url, sourceCode, false,screenShots);
 
                                 }
                             } else if (!Credits.isEmpty()) {
                                 if (!Credits.isEmpty() && !sourceCode.isEmpty()) {
-                                    listBuildModel = new ListBuildModel(romName, date, name, email, aboutRom, "images/" + uri.getLastPathSegment(), version, stabilityStatus, url, Credits, sourceCode);
+                                    listBuildModel = new ListBuildModel(romName, date, name, email, aboutRom, "images/" + uri.getLastPathSegment(), version, stabilityStatus, url, Credits, sourceCode,screenShots);
                                 } else {
-                                    listBuildModel = new ListBuildModel(romName, date, name, email, aboutRom, "images/" + uri.getLastPathSegment(), version, stabilityStatus, url, Credits);
+                                    listBuildModel = new ListBuildModel(romName, date, name, email, aboutRom, "images/" + uri.getLastPathSegment(), version, stabilityStatus, url, Credits,screenShots);
 
                                 }
                             } else {
-                                listBuildModel = new ListBuildModel(romName, date, name, email, aboutRom, "images/" + uri.getLastPathSegment(), version, stabilityStatus, url);
+                                listBuildModel = new ListBuildModel(romName, date, name, email, aboutRom, "images/" + uri.getLastPathSegment(), version, stabilityStatus, url,screenShots);
                             }
 
                             if (fromHolder) {
