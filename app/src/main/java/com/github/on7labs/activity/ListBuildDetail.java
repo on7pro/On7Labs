@@ -49,6 +49,7 @@ public class ListBuildDetail extends AppCompatActivity implements View.OnClickLi
     private RichContentView RichBuild;
     private String paragraph;
     private RichTextDocumentElement.TextBuilder element;
+    private String ImgUrl;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -139,6 +140,7 @@ public class ListBuildDetail extends AppCompatActivity implements View.OnClickLi
                     textViewLoadingImage.setVisibility(View.GONE);
                     imageViewBanner.setImageDrawable(ContextCompat.getDrawable(ListBuildDetail.this, R.drawable.ic_no_thumbnail));
                 } else {
+                    ImgUrl=uri.toString();
                     textViewLoadingImage.setVisibility(View.GONE);
                     Glide.with(getApplicationContext())
                             .load(uri.toString())
@@ -152,6 +154,7 @@ public class ListBuildDetail extends AppCompatActivity implements View.OnClickLi
 
             }
         });
+        imageViewBanner.setOnClickListener(this);
     }
 
     @Override
@@ -160,6 +163,12 @@ public class ListBuildDetail extends AppCompatActivity implements View.OnClickLi
         if (id == btRomUrl.getId()) {
             Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(romUrl));
             startActivity(browserIntent);
+        }else if(id==imageViewBanner.getId())
+        {
+            if (ImgUrl!=null)
+            {
+                startActivity(new Intent(ListBuildDetail.this,ViewImage.class).putExtra("url",ImgUrl));
+            }
         }
     }
 

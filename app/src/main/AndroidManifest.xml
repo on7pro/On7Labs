@@ -26,6 +26,7 @@
         </activity>
         <activity android:name=".activity.ListBuildDetail"/>
         <activity android:name=".activity.ActivityAddBuild" android:label="Add Build"/>
+        <activity android:name=".activity.ViewImage"/>
     </application>
 
 </manifest>
