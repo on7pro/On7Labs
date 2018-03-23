@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
 import android.webkit.URLUtil;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -28,8 +29,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.UploadTask;
+import com.isapanah.awesomespinner.AwesomeSpinner;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.transform.Source;
 
@@ -49,9 +53,10 @@ public class ActivityAddBuild extends AppCompatActivity implements View.OnClickL
     private FileListerDialog fileListerDialog;
     private int version=0;
     private String email,name,imgpath="noimg",date,romName,aboutRom,stabilityStatus,url,sourceCode,Credits;
-    private EditText editTextName,editTextAboutRom,editTextStabilityStatus,editTextVersion,editTextUrl,editTextSourceCode,editTextCredits;
+    private EditText editTextName,editTextAboutRom,editTextVersion,editTextUrl,editTextSourceCode,editTextCredits;
     private UploadTask uploadTask;
     private ListBuildModel listBuildModel;
+    private AwesomeSpinner awesomeSpinnerStatus;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -64,11 +69,11 @@ public class ActivityAddBuild extends AppCompatActivity implements View.OnClickL
         imageViewBanner=findViewById(R.id.img_banner);
         editTextName=findViewById(R.id.ed_project_name);
         editTextAboutRom=findViewById(R.id.ed_about_rom);
-        editTextStabilityStatus=findViewById(R.id.ed_stability_status);
         editTextVersion=findViewById(R.id.ed_version);
         editTextUrl=findViewById(R.id.ed_url);
         editTextSourceCode=findViewById(R.id.ed_source_code);
         editTextCredits=findViewById(R.id.ed_credits);
+        awesomeSpinnerStatus = findViewById(R.id.spinner_status);
         date= DateUtils.getDate();
         email=firebaseAuth.getCurrentUser().getEmail();
         name=firebaseAuth.getCurrentUser().getDisplayName();
@@ -78,6 +83,16 @@ public class ActivityAddBuild extends AppCompatActivity implements View.OnClickL
 
         btSubmit.setMode(ActionProcessButton.Mode.PROGRESS);
         btSubmit.setMode(ActionProcessButton.Mode.ENDLESS);
+        List<String> categories = new ArrayList();
+        categories.add("Stable");
+        categories.add("Beta");
+        categories.add("Alpha");
+        categories.add("Pre release");
+        categories.add("Intial release");
+
+        ArrayAdapter<String> categoriesAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, categories);
+
+        awesomeSpinnerStatus.setAdapter(categoriesAdapter);
 
         fileListerDialog.setOnFileSelectedListener(new OnFileSelectedListener() {
             @Override
@@ -88,7 +103,12 @@ public class ActivityAddBuild extends AppCompatActivity implements View.OnClickL
                 imgpath=path;
             }
         });
-
+        awesomeSpinnerStatus.setOnSpinnerItemClickListener(new AwesomeSpinner.onSpinnerItemClickListener<String>() {
+            @Override
+            public void onItemSelected(int i, String s) {
+                stabilityStatus=s;
+            }
+        });
         btSubmit.setOnClickListener(this);
         imageViewBanner.setOnClickListener(this);
     }
@@ -97,7 +117,6 @@ public class ActivityAddBuild extends AppCompatActivity implements View.OnClickL
     private boolean CheckFields(){
         romName=editTextName.getText().toString();
         aboutRom=editTextAboutRom.getText().toString();
-        stabilityStatus=editTextStabilityStatus.getText().toString();
         try {
             version= Integer.parseInt(editTextVersion.getText().toString());
         }catch (NumberFormatException e)
@@ -119,9 +138,9 @@ public class ActivityAddBuild extends AppCompatActivity implements View.OnClickL
         {
             Toast.makeText(getBaseContext(),"Please enter about rom",Toast.LENGTH_SHORT).show();
             return false;
-        }else if (stabilityStatus.isEmpty())
+        }else if (stabilityStatus==null)
         {
-            Toast.makeText(getBaseContext(),"Please enter stability status",Toast.LENGTH_SHORT).show();
+            Toast.makeText(getBaseContext(),"Please select stability status",Toast.LENGTH_SHORT).show();
             return false;
         }else if (version==0)
         {

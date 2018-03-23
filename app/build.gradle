@@ -58,6 +58,7 @@ dependencies {
     implementation 'yogesh.firzen:FilesLister:1.0.1.g'
     implementation 'yogesh.firzen:MukkiyaSevaigal:1.0.6'
     implementation 'commons-io:commons-io:2.6'
+    implementation 'com.github.amlashi-sadra:AwesomeSpinner:1.0.7'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.6.1'
 
 }
