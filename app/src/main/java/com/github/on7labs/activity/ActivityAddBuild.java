@@ -344,7 +344,7 @@ public class ActivityAddBuild extends AppCompatActivity implements View.OnClickL
                                             screenShots=new ScreenShots(img1,img2,img3,img4);
                                             if (img1!=null && img2!=null && img3!=null && img4!=null && img5!=null)
                                             {
-                                                screenShots=new ScreenShots(img1,img2,img3,img5);
+                                                screenShots=new ScreenShots(img1,img2,img3,img4,img5);
                                             }
                                         }
                                     }

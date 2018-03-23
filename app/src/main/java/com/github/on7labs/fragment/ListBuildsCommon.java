@@ -18,6 +18,7 @@ import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.github.on7labs.R;
 import com.github.on7labs.holder.ListBuildsHolder;
 import com.github.on7labs.model.ListBuildModel;
+import com.github.on7labs.model.ScreenShots;
 import com.github.on7labs.util.FirebaseProgressBar;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
@@ -81,7 +82,12 @@ public class ListBuildsCommon extends Fragment {
                         model.getVersion(),
                         model.getCredits(),
                         model.getSource(),
-                        key
+                        key,
+                        model.getScreenShots().getScreenShot1(),
+                        model.getScreenShots().getScreenShot2(),
+                        model.getScreenShots().getScreenShot3(),
+                        model.getScreenShots().getScreenShot4(),
+                        model.getScreenShots().getScreenShot5()
                 );
             }
 
