@@ -12,7 +12,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
@@ -43,17 +42,18 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener ,View.OnClickListener{
+        implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
     private View NavView;
-    private TextView textViewName,textViewEmail;
+    private TextView textViewName, textViewEmail;
     private FirebaseAuth firebaseAuth;
-    private String email,name;
+    private String email, name;
     private Uri profileUrl;
     private ImageView imageViewProfile;
     private Toolbar toolbar;
     private FloatingActionButton floatingActionButtonAddThread;
     private FirebaseDatabase firebaseDatabase;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,32 +67,31 @@ public class MainActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        firebaseAuth=FirebaseAuth.getInstance();
-        firebaseDatabase=FirebaseDatabase.getInstance();
-        name=firebaseAuth.getCurrentUser().getDisplayName();
-        email=firebaseAuth.getCurrentUser().getEmail();
-        profileUrl=firebaseAuth.getCurrentUser().getPhotoUrl();
-        NavigationView navigationView =  findViewById(R.id.nav_view);
-        NavView= navigationView.inflateHeaderView(R.layout.nav_header_main);
-        textViewName=NavView.findViewById(R.id.tv_nav_name);
-        textViewEmail=NavView.findViewById(R.id.tv_nav_email);
-        imageViewProfile=NavView.findViewById(R.id.nav_imageView);
-        floatingActionButtonAddThread=findViewById(R.id.fab_add_thread);
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        name = firebaseAuth.getCurrentUser().getDisplayName();
+        email = firebaseAuth.getCurrentUser().getEmail();
+        profileUrl = firebaseAuth.getCurrentUser().getPhotoUrl();
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        NavView = navigationView.inflateHeaderView(R.layout.nav_header_main);
+        textViewName = NavView.findViewById(R.id.tv_nav_name);
+        textViewEmail = NavView.findViewById(R.id.tv_nav_email);
+        imageViewProfile = NavView.findViewById(R.id.nav_imageView);
+        floatingActionButtonAddThread = findViewById(R.id.fab_add_thread);
 
         textViewName.setText(name);
         textViewEmail.setText(email);
         new ProfileTask().execute();
         navigationView.setNavigationItemSelectedListener(this);
-        updateFrame(new FragmentHome(),getString(R.string.home));
-        Query query=firebaseDatabase.getReference("Developers").orderByChild("email").equalTo(email);
+        updateFrame(new FragmentHome(), getString(R.string.home));
+        Query query = firebaseDatabase.getReference("Developers").orderByChild("email").equalTo(email);
         query.keepSynced(true);
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-               if (dataSnapshot.exists())
-               {
-                   floatingActionButtonAddThread.setVisibility(View.VISIBLE);
-               }
+                if (dataSnapshot.exists()) {
+                    floatingActionButtonAddThread.setVisibility(View.VISIBLE);
+                }
             }
 
             @Override
@@ -120,7 +119,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void requestPermission() {
-        if (android.os.Build.VERSION.SDK_INT>= Build.VERSION_CODES.M) {
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
             if (ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                 Toast.makeText(MainActivity.this, "Please allow permission in App SettingsActivity.", Toast.LENGTH_LONG).show();
@@ -178,9 +177,8 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_home) {
-            updateFrame(new FragmentHome(),getString(R.string.home));
-        }else if (id==R.id.nav_logout)
-        {
+            updateFrame(new FragmentHome(), getString(R.string.home));
+        } else if (id == R.id.nav_logout) {
             firebaseAuth.signOut();
             startActivity(new Intent(this, LoginActivity.class));
             finish();
@@ -191,28 +189,28 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    private void updateFrame(Fragment fragment,String title){
+    private void updateFrame(Fragment fragment, String title) {
         toolbar.setTitle(title);
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.content_main,fragment);
+        ft.replace(R.id.content_main, fragment);
         ft.commit();
     }
 
     @Override
     public void onClick(View view) {
-        int id=view.getId();
-        if (id==floatingActionButtonAddThread.getId())
-        {
-            startActivity(new Intent(MainActivity.this, ActivityAddBuild.class).putExtra("formHolder",false));
+        int id = view.getId();
+        if (id == floatingActionButtonAddThread.getId()) {
+            startActivity(new Intent(MainActivity.this, ActivityAddBuild.class).putExtra("formHolder", false));
         }
     }
 
-    private class ProfileTask extends AsyncTask<Void,Void,Void>{
+    private class ProfileTask extends AsyncTask<Void, Void, Void> {
         private Bitmap bmp;
+
         @Override
         protected Void doInBackground(Void... voids) {
             try {
-                URL  url = new URL(profileUrl.toString());
+                URL url = new URL(profileUrl.toString());
                 bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
             } catch (MalformedURLException e) {
                 e.printStackTrace();

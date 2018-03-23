@@ -35,22 +35,24 @@ public class ListBuildsCommon extends Fragment {
     private boolean bottom;
     private LinearLayoutManager layoutManager;
     private View view;
-    public ListBuildsCommon(){}
 
-    public ListBuildsCommon(String ref){
-        this.ref=ref;
+    public ListBuildsCommon() {
+    }
+
+    public ListBuildsCommon(String ref) {
+        this.ref = ref;
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v=inflater.inflate(R.layout.fragment_list_builds,container,false);
-        this.view=v;
+        View v = inflater.inflate(R.layout.fragment_list_builds, container, false);
+        this.view = v;
         lvBuilds = v.findViewById(R.id.rv_list_build);
         query = FirebaseDatabase.getInstance()
                 .getReference(ref);
         options = new FirebaseRecyclerOptions.Builder()
-                .setQuery(query,ListBuildModel.class)
+                .setQuery(query, ListBuildModel.class)
                 .build();
         query.keepSynced(true);
 
@@ -59,14 +61,14 @@ public class ListBuildsCommon extends Fragment {
             public ListBuildsHolder onCreateViewHolder(ViewGroup parent, int viewType) {
                 View view1 = LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.list_build, parent, false);
-                return new ListBuildsHolder(view1,ref,getContext());
+                return new ListBuildsHolder(view1, ref, getContext());
             }
 
             @Override
             protected void onBindViewHolder(@NonNull ListBuildsHolder holder,
                                             int position,
                                             @NonNull ListBuildModel model) {
-                String key=adapter.getRef(position).getKey();
+                String key = adapter.getRef(position).getKey();
                 holder.bind(
                         model.getName(),
                         model.getDate(),
@@ -93,23 +95,24 @@ public class ListBuildsCommon extends Fragment {
         layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         ProgressBar();
-        if (bottom)
-        {
+        if (bottom) {
             layoutManager.setStackFromEnd(true);
         }
         lvBuilds.setLayoutManager(layoutManager);
         lvBuilds.setAdapter(adapter);
-        if (savedInstanceState==null) {
+        if (savedInstanceState == null) {
             return v;
-        }else {
+        } else {
             return null;
         }
     }
-    private void ProgressBar(){
-        ProgressBar progressBar= view.findViewById(R.id.pb_builds);
-        TextView textView= view.findViewById(R.id.tv_no_build);
+
+    private void ProgressBar() {
+        ProgressBar progressBar = view.findViewById(R.id.pb_builds);
+        TextView textView = view.findViewById(R.id.tv_no_build);
         new FirebaseProgressBar(progressBar, textView, adapter, ref);
     }
+
     @Override
     public void onStart() {
         super.onStart();

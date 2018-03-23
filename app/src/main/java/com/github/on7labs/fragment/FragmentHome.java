@@ -25,13 +25,13 @@ public class FragmentHome extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v=inflater.inflate(R.layout.fragment_home,container,false);
+        View v = inflater.inflate(R.layout.fragment_home, container, false);
         ViewPager viewPager = v.findViewById(R.id.pager);
         ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager());
-        adapter.addFragment(new ListBuildsCommon("Rom"),getString(R.string.roms));
-        adapter.addFragment(new ListBuildsCommon("Kernel"),getString(R.string.kernel));
-        adapter.addFragment(new ListBuildsCommon("Recovery"),getString(R.string.recovery));
-        adapter.addFragment(new ListBuildsCommon("Mod"),getString(R.string.mods));
+        adapter.addFragment(new ListBuildsCommon("Rom"), getString(R.string.roms));
+        adapter.addFragment(new ListBuildsCommon("Kernel"), getString(R.string.kernel));
+        adapter.addFragment(new ListBuildsCommon("Recovery"), getString(R.string.recovery));
+        adapter.addFragment(new ListBuildsCommon("Mod"), getString(R.string.mods));
 
         viewPager.setAdapter(adapter);
         TabLayout tabLayout = v.findViewById(R.id.tabs);

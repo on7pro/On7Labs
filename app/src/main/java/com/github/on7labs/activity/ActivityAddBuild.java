@@ -1,18 +1,13 @@
 package com.github.on7labs.activity;
 
-import android.app.Activity;
-import android.app.NotificationManager;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
 import android.view.View;
 import android.webkit.URLUtil;
-import android.widget.ArrayAdapter;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -29,11 +24,13 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.UploadTask;
-import com.isapanah.awesomespinner.AwesomeSpinner;
+
+import org.angmarch.views.NiceSpinner;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 import yogesh.firzen.filelister.FileListerDialog;
@@ -43,19 +40,20 @@ import yogesh.firzen.filelister.OnFileSelectedListener;
  * Created by androidlover5842 on 22.3.2018.
  */
 
-public class ActivityAddBuild extends AppCompatActivity implements View.OnClickListener{
+public class ActivityAddBuild extends AppCompatActivity implements View.OnClickListener {
     private ActionProcessButton btSubmit;
     private ImageView imageViewBanner;
     private FirebaseStorage firebaseStorage;
     private FirebaseDatabase firebaseDatabase;
     private FirebaseAuth firebaseAuth;
     private FileListerDialog fileListerDialog;
-    private int version=0;
-    private String email,name,imgpath="noimg",date,romName,aboutRom,stabilityStatus,url,sourceCode,Credits,key;
-    private EditText editTextName,editTextAboutRom,editTextVersion,editTextUrl,editTextSourceCode,editTextCredits;
+    private int version = 0;
+    private String email, name, imgpath = "noimg", date, romName, aboutRom, stabilityStatus = "Stable", url, sourceCode, Credits, key, type="Rom";
+    private EditText editTextName, editTextAboutRom, editTextVersion, editTextUrl, editTextSourceCode, editTextCredits;
     private UploadTask uploadTask;
     private ListBuildModel listBuildModel;
-    private AwesomeSpinner awesomeSpinnerStatus;
+    private NiceSpinner niceSpinnerReleaseStatus;
+    private NiceSpinner niceSpinnerReleaseType;
     private boolean fromHolder;
     private Bundle bundle;
 
@@ -63,49 +61,50 @@ public class ActivityAddBuild extends AppCompatActivity implements View.OnClickL
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_build);
-        firebaseStorage=FirebaseStorage.getInstance();
-        firebaseDatabase=FirebaseDatabase.getInstance();
-        firebaseAuth=FirebaseAuth.getInstance();
+        firebaseStorage = FirebaseStorage.getInstance();
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        firebaseAuth = FirebaseAuth.getInstance();
         bundle = getIntent().getExtras();
         btSubmit = findViewById(R.id.btSubmit);
-        imageViewBanner=findViewById(R.id.img_banner);
-        editTextName=findViewById(R.id.ed_project_name);
-        editTextAboutRom=findViewById(R.id.ed_about_rom);
-        editTextVersion=findViewById(R.id.ed_version);
-        editTextUrl=findViewById(R.id.ed_url);
-        editTextSourceCode=findViewById(R.id.ed_source_code);
-        editTextCredits=findViewById(R.id.ed_credits);
-        awesomeSpinnerStatus = findViewById(R.id.spinner_status);
-        fromHolder=bundle.getBoolean("fromHolder");
-        date= DateUtils.getDate();
-        email=firebaseAuth.getCurrentUser().getEmail();
-        name=firebaseAuth.getCurrentUser().getDisplayName();
-        if (fromHolder)
-        {
+        imageViewBanner = findViewById(R.id.img_banner);
+        editTextName = findViewById(R.id.ed_project_name);
+        editTextAboutRom = findViewById(R.id.ed_about_rom);
+        editTextVersion = findViewById(R.id.ed_version);
+        editTextUrl = findViewById(R.id.ed_url);
+        editTextSourceCode = findViewById(R.id.ed_source_code);
+        editTextCredits = findViewById(R.id.ed_credits);
+        niceSpinnerReleaseStatus = findViewById(R.id.spinner_release_status);
+        niceSpinnerReleaseType = findViewById(R.id.spinner_release_type);
+        final List<String> releaseStatusList = new LinkedList<>(Arrays.asList("Stable", "Beta", "Alpha", "Pre release", "Initial release"));
+        final List<String> releaseType = new LinkedList<>(Arrays.asList("Rom", "Recovery", "Kernel", "Mod"));
+
+        fromHolder = bundle.getBoolean("fromHolder");
+        date = DateUtils.getDate();
+        email = firebaseAuth.getCurrentUser().getEmail();
+        name = firebaseAuth.getCurrentUser().getDisplayName();
+        if (fromHolder) {
             romName = bundle.getString("name");
             aboutRom = bundle.getString("description");
             url = bundle.getString("romUrl");
-            Credits= bundle.getString("credits");
+            Credits = bundle.getString("credits");
             version = bundle.getInt("version");
             stabilityStatus = bundle.getString("status");
             sourceCode = bundle.getString("source");
-            key=bundle.getString("key");
+            key = bundle.getString("key");
             editTextName.setText(romName);
             editTextAboutRom.setText(aboutRom);
-           editTextVersion.setText(String.valueOf(version));
+            editTextVersion.setText(String.valueOf(version));
             editTextUrl.setText(url);
-            if (sourceCode!=null)
-            {
+            if (sourceCode != null) {
                 editTextSourceCode.setText(sourceCode);
             }
-            if (Credits!=null)
-            {
+            if (Credits != null) {
                 editTextCredits.setText(Credits);
             }
             final String path = bundle.getString("bannerUrl");
             File localFile = null;
             try {
-                localFile= File.createTempFile("images", "jpg");
+                localFile = File.createTempFile("images", "jpg");
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -115,7 +114,7 @@ public class ActivityAddBuild extends AppCompatActivity implements View.OnClickL
                 @Override
                 public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
                     Glide.with(getApplicationContext()).load(finalLocalFile).into(imageViewBanner);
-                    imgpath= finalLocalFile.getAbsolutePath();
+                    imgpath = finalLocalFile.getAbsolutePath();
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
@@ -132,16 +131,6 @@ public class ActivityAddBuild extends AppCompatActivity implements View.OnClickL
 
         btSubmit.setMode(ActionProcessButton.Mode.PROGRESS);
         btSubmit.setMode(ActionProcessButton.Mode.ENDLESS);
-        List<String> categories = new ArrayList();
-        categories.add("Stable");
-        categories.add("Beta");
-        categories.add("Alpha");
-        categories.add("Pre release");
-        categories.add("Initial release");
-
-        ArrayAdapter<String> categoriesAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, categories);
-
-        awesomeSpinnerStatus.setAdapter(categoriesAdapter);
 
         fileListerDialog.setOnFileSelectedListener(new OnFileSelectedListener() {
             @Override
@@ -149,12 +138,27 @@ public class ActivityAddBuild extends AppCompatActivity implements View.OnClickL
                 Glide.with(getApplicationContext())
                         .load(path)
                         .into(imageViewBanner);
+                imgpath=path;
             }
         });
-        awesomeSpinnerStatus.setOnSpinnerItemClickListener(new AwesomeSpinner.onSpinnerItemClickListener<String>() {
+
+        niceSpinnerReleaseStatus.attachDataSource(releaseStatusList);
+        niceSpinnerReleaseType.attachDataSource(releaseType);
+        niceSpinnerReleaseStatus.addOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemSelected(int i, String s) {
-                stabilityStatus=s;
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                stabilityStatus = releaseStatusList.get(i);
+            }
+        });
+        niceSpinnerReleaseType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                type = releaseType.get(i);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
             }
         });
         btSubmit.setOnClickListener(this);
@@ -162,89 +166,74 @@ public class ActivityAddBuild extends AppCompatActivity implements View.OnClickL
     }
 
 
-    private boolean CheckFields(){
-        romName=editTextName.getText().toString();
-        aboutRom=editTextAboutRom.getText().toString();
+    private boolean CheckFields() {
+        romName = editTextName.getText().toString();
+        aboutRom = editTextAboutRom.getText().toString();
         try {
-            version= Integer.parseInt(editTextVersion.getText().toString());
-        }catch (NumberFormatException e)
-        {
+            version = Integer.parseInt(editTextVersion.getText().toString());
+        } catch (NumberFormatException e) {
             e.printStackTrace();
         }
-        url=editTextUrl.getText().toString();
-        sourceCode=editTextSourceCode.getText().toString();
-        Credits=editTextCredits.getText().toString();
-        if (imgpath.equals("noimg"))
-        {
-            Toast.makeText(getBaseContext(),"Please select banner",Toast.LENGTH_SHORT).show();
+        url = editTextUrl.getText().toString();
+        sourceCode = editTextSourceCode.getText().toString();
+        Credits = editTextCredits.getText().toString();
+        if (imgpath.equals("noimg")) {
+            Toast.makeText(getBaseContext(), "Please select banner", Toast.LENGTH_SHORT).show();
             return false;
-        }else if (romName.isEmpty())
-        {
-            Toast.makeText(getBaseContext(),"Please enter rom name",Toast.LENGTH_SHORT).show();
+        } else if (romName.isEmpty()) {
+            Toast.makeText(getBaseContext(), "Please enter rom name", Toast.LENGTH_SHORT).show();
             return false;
-        } else if (aboutRom.isEmpty())
-        {
-            Toast.makeText(getBaseContext(),"Please enter about rom",Toast.LENGTH_SHORT).show();
+        } else if (aboutRom.isEmpty()) {
+            Toast.makeText(getBaseContext(), "Please enter about rom", Toast.LENGTH_SHORT).show();
             return false;
-        }else if (stabilityStatus==null)
-        {
-            Toast.makeText(getBaseContext(),"Please select stability status",Toast.LENGTH_SHORT).show();
+        } else if (stabilityStatus == null) {
+            Toast.makeText(getBaseContext(), "Please select stability status", Toast.LENGTH_SHORT).show();
             return false;
-        }else if (version==0)
-        {
-            Toast.makeText(getBaseContext(),"Please enter version name",Toast.LENGTH_SHORT).show();
+        } else if (version == 0) {
+            Toast.makeText(getBaseContext(), "Please enter version name", Toast.LENGTH_SHORT).show();
             return false;
-        }else if (url.isEmpty())
-        {
-            Toast.makeText(getBaseContext(),"Please enter rom url",Toast.LENGTH_SHORT).show();
+        } else if (url.isEmpty()) {
+            Toast.makeText(getBaseContext(), "Please enter rom url", Toast.LENGTH_SHORT).show();
             return false;
-        }else {
+        }
+        else {
             return true;
         }
     }
 
     @Override
     public void onClick(View view) {
-        int id=view.getId();
-        if (id==btSubmit.getId())
-        {
-            if (CheckFields())
-            {
-                if (URLUtil.isValidUrl(url) ) {
+        int id = view.getId();
+        if (id == btSubmit.getId()) {
+            if (CheckFields()) {
+                if (URLUtil.isValidUrl(url)) {
                     final Uri uri = Uri.fromFile(new File(imgpath));
                     uploadTask = firebaseStorage.getReference().child("images/" + uri.getLastPathSegment()).putFile(uri);
                     uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            if (!sourceCode.isEmpty())
-                            {
-                                if (!Credits.isEmpty() && !sourceCode.isEmpty())
-                                {
-                                    listBuildModel = new ListBuildModel(romName, date, name, email, aboutRom, "images/" + uri.getLastPathSegment(), version, stabilityStatus, url,Credits, sourceCode);
-                                }else {
-                                    listBuildModel = new ListBuildModel(romName, date, name, email, aboutRom, "images/" + uri.getLastPathSegment(), version, stabilityStatus, url,sourceCode,false);
+                            if (!sourceCode.isEmpty()) {
+                                if (!Credits.isEmpty() && !sourceCode.isEmpty()) {
+                                    listBuildModel = new ListBuildModel(romName, date, name, email, aboutRom, "images/" + uri.getLastPathSegment(), version, stabilityStatus, url, Credits, sourceCode);
+                                } else {
+                                    listBuildModel = new ListBuildModel(romName, date, name, email, aboutRom, "images/" + uri.getLastPathSegment(), version, stabilityStatus, url, sourceCode, false);
 
                                 }
-                            }else
-                            if (!Credits.isEmpty())
-                            {
-                                if (!Credits.isEmpty() && !sourceCode.isEmpty())
-                                {
-                                    listBuildModel = new ListBuildModel(romName, date, name, email, aboutRom, "images/" + uri.getLastPathSegment(), version, stabilityStatus, url,Credits, sourceCode);
-                                }else {
-                                    listBuildModel = new ListBuildModel(romName, date, name, email, aboutRom, "images/" + uri.getLastPathSegment(), version, stabilityStatus, url,Credits);
+                            } else if (!Credits.isEmpty()) {
+                                if (!Credits.isEmpty() && !sourceCode.isEmpty()) {
+                                    listBuildModel = new ListBuildModel(romName, date, name, email, aboutRom, "images/" + uri.getLastPathSegment(), version, stabilityStatus, url, Credits, sourceCode);
+                                } else {
+                                    listBuildModel = new ListBuildModel(romName, date, name, email, aboutRom, "images/" + uri.getLastPathSegment(), version, stabilityStatus, url, Credits);
 
                                 }
-                            }else {
+                            } else {
                                 listBuildModel = new ListBuildModel(romName, date, name, email, aboutRom, "images/" + uri.getLastPathSegment(), version, stabilityStatus, url);
                             }
 
-                            if (fromHolder)
-                            {
-                                firebaseDatabase.getReference("Rom").child(key).setValue(listBuildModel);
-                            }else
-                            {
-                                firebaseDatabase.getReference("Rom").push().setValue(listBuildModel);
+                            if (fromHolder) {
+                                firebaseDatabase.getReference(type).child(key).setValue(listBuildModel);
+                            } else {
+                                firebaseDatabase.getReference(type).push().setValue(listBuildModel);
                             }
                             finish();
 
@@ -258,13 +247,11 @@ public class ActivityAddBuild extends AppCompatActivity implements View.OnClickL
                     });
                     btSubmit.setEnabled(false);
                     btSubmit.setProgress(50);
-                }else {
-                    Toast.makeText(getBaseContext(),"Please enter valid url",Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getBaseContext(), "Please enter valid url", Toast.LENGTH_SHORT).show();
                 }
             }
-        }
-        else if (id==imageViewBanner.getId())
-        {
+        } else if (id == imageViewBanner.getId()) {
             fileListerDialog.show();
         }
     }

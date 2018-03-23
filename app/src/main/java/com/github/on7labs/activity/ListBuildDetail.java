@@ -1,12 +1,8 @@
 package com.github.on7labs.activity;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
-import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -24,19 +20,14 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-
 import io.square1.richtextlib.ui.RichContentView;
-import io.square1.richtextlib.v2.RichTextV2;
 import io.square1.richtextlib.v2.content.RichTextDocumentElement;
 
 /**
  * Created by androidlover5842 on 21.3.2018.
  */
 
-public class ListBuildDetail extends AppCompatActivity implements View.OnClickListener{
+public class ListBuildDetail extends AppCompatActivity implements View.OnClickListener {
     private String name;
     private String date;
     private String developerName;
@@ -48,16 +39,17 @@ public class ListBuildDetail extends AppCompatActivity implements View.OnClickLi
     private String credit;
     private String source;
     private String status;
-   // private TextView textViewName,textViewDate,textViewDeveloperName,textViewLoadingImage,textViewDescription,textViewDeveloperEmail;
+    // private TextView textViewName,textViewDate,textViewDeveloperName,textViewLoadingImage,textViewDescription,textViewDeveloperEmail;
     private TextView textViewLoadingImage;
     private ImageView imageViewBanner;
     private Bundle bundle;
-    private String colon=" : ";
+    private String colon = " : ";
     private Button btRomUrl;
     private StorageReference storageReference;
     private RichContentView RichBuild;
     private String paragraph;
     private RichTextDocumentElement.TextBuilder element;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -124,20 +116,18 @@ public class ListBuildDetail extends AppCompatActivity implements View.OnClickLi
                 .bold()
                 .newLine();
 
-        if (source != null)
-        {
+        if (source != null) {
             element.append("source" + colon + source).bold().newLine();
-    }
+        }
 
-    if (credit!=null)
-    {
-        element
-                .append("credits"+colon)
-                .bold()
-                .newLine()
-                .append(credit)
-                .bold();
-    }
+        if (credit != null) {
+            element
+                    .append("credits" + colon)
+                    .bold()
+                    .newLine()
+                    .append(credit)
+                    .bold();
+        }
 
         RichBuild.setText(element.build());
 
@@ -145,13 +135,10 @@ public class ListBuildDetail extends AppCompatActivity implements View.OnClickLi
         storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
-                if (uri.toString()==null)
-                {
+                if (uri.toString() == null) {
                     textViewLoadingImage.setVisibility(View.GONE);
                     imageViewBanner.setImageDrawable(ContextCompat.getDrawable(ListBuildDetail.this, R.drawable.ic_no_thumbnail));
-                }
-                else
-                {
+                } else {
                     textViewLoadingImage.setVisibility(View.GONE);
                     Glide.with(getApplicationContext())
                             .load(uri.toString())
@@ -169,9 +156,8 @@ public class ListBuildDetail extends AppCompatActivity implements View.OnClickLi
 
     @Override
     public void onClick(View view) {
-        int id=view.getId();
-        if (id==btRomUrl.getId())
-        {
+        int id = view.getId();
+        if (id == btRomUrl.getId()) {
             Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(romUrl));
             startActivity(browserIntent);
         }

@@ -12,7 +12,7 @@ public class DateUtils {
     public static SimpleDateFormat simpleDateFormat;
     public static String Dat;
 
-      public static String getDate(){
+    public static String getDate() {
         calendar = Calendar.getInstance();
         simpleDateFormat = new SimpleDateFormat("dd-MMM-yyyy");
         Dat = simpleDateFormat.format(calendar.getTime());

@@ -1,12 +1,10 @@
 package com.github.on7labs.model;
 
-import android.content.Intent;
-
 /**
  * Created by androidlover5842 on 21.3.2018.
  */
 
-public class ListBuildModel  {
+public class ListBuildModel {
     private String name;
     private String date;
     private String developerName;
@@ -19,58 +17,59 @@ public class ListBuildModel  {
     private String status;
     private String source;
 
-    public ListBuildModel(){}
-
-    public ListBuildModel(String name,String date,String developerName,String developerEmail,String description,String bannerUrl,Integer version,String status,String romUrl){
-        this.bannerUrl=bannerUrl;
-        this.name=name;
-        this.developerEmail=developerEmail;
-        this.developerName=developerName;
-        this.date=date;
-        this.description=description;
-        this.romUrl=romUrl;
-        this.version=version;
-        this.status=status;
+    public ListBuildModel() {
     }
 
-    public ListBuildModel(String name,String date,String developerName,String developerEmail,String description,String bannerUrl,Integer version,String status,String romUrl,String credits ,String source){
-        this.bannerUrl=bannerUrl;
-        this.name=name;
-        this.developerEmail=developerEmail;
-        this.developerName=developerName;
-        this.date=date;
-        this.description=description;
-        this.romUrl=romUrl;
-        this.version=version;
-        this.status=status;
-        this.credits=credits;
-        this.source=source;
+    public ListBuildModel(String name, String date, String developerName, String developerEmail, String description, String bannerUrl, Integer version, String status, String romUrl) {
+        this.bannerUrl = bannerUrl;
+        this.name = name;
+        this.developerEmail = developerEmail;
+        this.developerName = developerName;
+        this.date = date;
+        this.description = description;
+        this.romUrl = romUrl;
+        this.version = version;
+        this.status = status;
     }
 
-    public ListBuildModel(String name,String date,String developerName,String developerEmail,String description,String bannerUrl,Integer version,String status,String romUrl,String credits){
-        this.bannerUrl=bannerUrl;
-        this.name=name;
-        this.developerEmail=developerEmail;
-        this.developerName=developerName;
-        this.date=date;
-        this.description=description;
-        this.romUrl=romUrl;
-        this.version=version;
-        this.status=status;
-        this.credits=credits;
+    public ListBuildModel(String name, String date, String developerName, String developerEmail, String description, String bannerUrl, Integer version, String status, String romUrl, String credits, String source) {
+        this.bannerUrl = bannerUrl;
+        this.name = name;
+        this.developerEmail = developerEmail;
+        this.developerName = developerName;
+        this.date = date;
+        this.description = description;
+        this.romUrl = romUrl;
+        this.version = version;
+        this.status = status;
+        this.credits = credits;
+        this.source = source;
     }
 
-    public ListBuildModel(String name,String date,String developerName,String developerEmail,String description,String bannerUrl,Integer version,String status,String romUrl,String source,boolean test){
-        this.bannerUrl=bannerUrl;
-        this.name=name;
-        this.developerEmail=developerEmail;
-        this.developerName=developerName;
-        this.date=date;
-        this.description=description;
-        this.romUrl=romUrl;
-        this.version=version;
-        this.status=status;
-        this.source=source;
+    public ListBuildModel(String name, String date, String developerName, String developerEmail, String description, String bannerUrl, Integer version, String status, String romUrl, String credits) {
+        this.bannerUrl = bannerUrl;
+        this.name = name;
+        this.developerEmail = developerEmail;
+        this.developerName = developerName;
+        this.date = date;
+        this.description = description;
+        this.romUrl = romUrl;
+        this.version = version;
+        this.status = status;
+        this.credits = credits;
+    }
+
+    public ListBuildModel(String name, String date, String developerName, String developerEmail, String description, String bannerUrl, Integer version, String status, String romUrl, String source, boolean test) {
+        this.bannerUrl = bannerUrl;
+        this.name = name;
+        this.developerEmail = developerEmail;
+        this.developerName = developerName;
+        this.date = date;
+        this.description = description;
+        this.romUrl = romUrl;
+        this.version = version;
+        this.status = status;
+        this.source = source;
     }
 
     public void setName(String name) {
