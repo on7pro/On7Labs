@@ -26,16 +26,15 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.UploadTask;
 import com.isapanah.awesomespinner.AwesomeSpinner;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.xml.transform.Source;
 
 import yogesh.firzen.filelister.FileListerDialog;
 import yogesh.firzen.filelister.OnFileSelectedListener;
@@ -57,6 +56,8 @@ public class ActivityAddBuild extends AppCompatActivity implements View.OnClickL
     private UploadTask uploadTask;
     private ListBuildModel listBuildModel;
     private AwesomeSpinner awesomeSpinnerStatus;
+    private boolean fromHolder;
+    private Bundle bundle;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -65,6 +66,7 @@ public class ActivityAddBuild extends AppCompatActivity implements View.OnClickL
         firebaseStorage=FirebaseStorage.getInstance();
         firebaseDatabase=FirebaseDatabase.getInstance();
         firebaseAuth=FirebaseAuth.getInstance();
+        bundle = getIntent().getExtras();
         btSubmit = findViewById(R.id.btSubmit);
         imageViewBanner=findViewById(R.id.img_banner);
         editTextName=findViewById(R.id.ed_project_name);
@@ -74,9 +76,55 @@ public class ActivityAddBuild extends AppCompatActivity implements View.OnClickL
         editTextSourceCode=findViewById(R.id.ed_source_code);
         editTextCredits=findViewById(R.id.ed_credits);
         awesomeSpinnerStatus = findViewById(R.id.spinner_status);
+        fromHolder=bundle.getBoolean("fromHolder");
         date= DateUtils.getDate();
         email=firebaseAuth.getCurrentUser().getEmail();
         name=firebaseAuth.getCurrentUser().getDisplayName();
+        if (fromHolder)
+        {
+            romName = bundle.getString("name");
+            aboutRom = bundle.getString("description");
+            url = bundle.getString("romUrl");
+            Credits= bundle.getString("credits");
+            version = bundle.getInt("version");
+            stabilityStatus = bundle.getString("status");
+            sourceCode = bundle.getString("source");
+            editTextName.setText(romName);
+            editTextAboutRom.setText(aboutRom);
+           editTextVersion.setText(String.valueOf(version));
+            editTextUrl.setText(url);
+            if (sourceCode!=null)
+            {
+                editTextSourceCode.setText(sourceCode);
+            }
+            if (Credits!=null)
+            {
+                editTextCredits.setText(Credits);
+            }
+            final String path = bundle.getString("bannerUrl");
+            File localFile = null;
+            try {
+                localFile= File.createTempFile("images", "jpg");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            final File finalLocalFile = localFile;
+            firebaseStorage.getReference().child(path).getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                    Glide.with(getApplicationContext()).load(finalLocalFile).into(imageViewBanner);
+                    imgpath= finalLocalFile.getAbsolutePath();
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    // Handle any errors
+                }
+            });
+
+
+        }
 
         fileListerDialog = FileListerDialog.createFileListerDialog(this);
         fileListerDialog.setFileFilter(FileListerDialog.FILE_FILTER.IMAGE_ONLY);
@@ -88,7 +136,7 @@ public class ActivityAddBuild extends AppCompatActivity implements View.OnClickL
         categories.add("Beta");
         categories.add("Alpha");
         categories.add("Pre release");
-        categories.add("Intial release");
+        categories.add("Initial release");
 
         ArrayAdapter<String> categoriesAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, categories);
 
@@ -100,7 +148,6 @@ public class ActivityAddBuild extends AppCompatActivity implements View.OnClickL
                 Glide.with(getApplicationContext())
                         .load(path)
                         .into(imageViewBanner);
-                imgpath=path;
             }
         });
         awesomeSpinnerStatus.setOnSpinnerItemClickListener(new AwesomeSpinner.onSpinnerItemClickListener<String>() {

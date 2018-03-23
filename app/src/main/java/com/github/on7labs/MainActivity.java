@@ -203,7 +203,7 @@ public class MainActivity extends AppCompatActivity
         int id=view.getId();
         if (id==floatingActionButtonAddThread.getId())
         {
-            startActivity(new Intent(MainActivity.this, ActivityAddBuild.class));
+            startActivity(new Intent(MainActivity.this, ActivityAddBuild.class).putExtra("formHolder",false));
         }
     }
 
