@@ -6,6 +6,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
@@ -26,6 +28,7 @@ public class ViewImage extends Activity {
     private String url;
     private Bundle bundle;
     private PhotoView photoView;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -33,10 +36,12 @@ public class ViewImage extends Activity {
         setContentView(R.layout.activity_view_image);
         bundle=getIntent().getExtras();
         photoView=findViewById(R.id.photo_view);
+        progressBar=findViewById(R.id.progressBar);
         url=bundle.getString("url");
         FirebaseStorage.getInstance().getReference().child(url).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
+                progressBar.setVisibility(View.GONE);
                 Glide.with(getApplicationContext())
                         .load(uri)
                         .into(photoView);
@@ -45,6 +50,8 @@ public class ViewImage extends Activity {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
+                progressBar.setVisibility(View.GONE);
+                photoView.setImageDrawable(getResources().getDrawable(R.drawable.ic_no_thumbnail,getTheme()));
 
             }
         });
