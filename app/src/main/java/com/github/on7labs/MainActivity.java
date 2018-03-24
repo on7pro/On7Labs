@@ -29,6 +29,7 @@ import android.widget.Toast;
 
 import com.github.on7labs.activity.ActivityAddBuild;
 import com.github.on7labs.activity.LoginActivity;
+import com.github.on7labs.fragment.CreditsFragment;
 import com.github.on7labs.fragment.FragmentHome;
 import com.github.on7labs.util.Config;
 import com.github.updater.Updater;
@@ -180,7 +181,12 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_home) {
             updateFrame(new FragmentHome(), getString(R.string.home));
-        } else if (id == R.id.nav_logout) {
+        }
+        else if (id==R.id.nav_credits)
+        {
+            updateFrame(new CreditsFragment(),"Contributors");
+        }
+        else if (id == R.id.nav_logout) {
             firebaseAuth.signOut();
             startActivity(new Intent(this, LoginActivity.class));
             finish();

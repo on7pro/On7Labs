@@ -8,6 +8,9 @@
             android:id="@+id/nav_home"
             android:icon="@drawable/ic_home"
             android:title="@string/home" />
+        <item android:id="@+id/nav_credits"
+            android:icon="@drawable/ic_developers"
+            android:title="Credits"/>
         <item
             android:id="@+id/nav_logout"
             android:icon="@drawable/ic_logout"
