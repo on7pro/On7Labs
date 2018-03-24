@@ -30,6 +30,8 @@ import android.widget.Toast;
 import com.github.on7labs.activity.ActivityAddBuild;
 import com.github.on7labs.activity.LoginActivity;
 import com.github.on7labs.fragment.FragmentHome;
+import com.github.on7labs.util.Config;
+import com.github.updater.Updater;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -102,7 +104,7 @@ public class MainActivity extends AppCompatActivity
         floatingActionButtonAddThread.setOnClickListener(this);
         checkPermission();
         requestPermission();
-
+        new Updater(this, Config.APP_VERSION,Config.APP_UPDATE_JSON_URL,false);
     }
 
     private boolean checkPermission() {
