@@ -40,6 +40,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+import es.dmoral.toasty.Toasty;
 import yogesh.firzen.filelister.FileListerDialog;
 import yogesh.firzen.filelister.OnFileSelectedListener;
 
@@ -222,7 +223,7 @@ public class ActivityAddBuild extends AppCompatActivity implements View.OnClickL
                 final Uri uri = Uri.fromFile(new File(path));
                 btSubmit.setEnabled(false);
                 btSubmit.setProgress(50);
-                Toast.makeText(ActivityAddBuild.this,"Uploading "+path,Toast.LENGTH_SHORT).show();
+                Toasty.info(ActivityAddBuild.this,"Uploading "+path, Toast.LENGTH_SHORT).show();
                 uploadTask = firebaseStorage.getReference().child("images/screenshots/" + uri.getLastPathSegment()).putFile(uri);
                 uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
@@ -252,14 +253,14 @@ public class ActivityAddBuild extends AppCompatActivity implements View.OnClickL
 
                         }
 
-                        Toast.makeText(ActivityAddBuild.this,"uploaded",Toast.LENGTH_SHORT).show();
+                        Toasty.success(ActivityAddBuild.this,"Uploaded", Toast.LENGTH_SHORT).show();
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         btSubmit.setEnabled(true);
                         btSubmit.setProgress(0);
-                        Toast.makeText(ActivityAddBuild.this,"Failed to upload",Toast.LENGTH_SHORT).show();
+                        Toasty.error(ActivityAddBuild.this,"Failed to upload", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -328,22 +329,22 @@ public class ActivityAddBuild extends AppCompatActivity implements View.OnClickL
         sourceCode = editTextSourceCode.getText().toString();
         Credits = editTextCredits.getText().toString();
         if (imgpath.equals("noimg")) {
-            Toast.makeText(getBaseContext(), "Please select banner", Toast.LENGTH_SHORT).show();
+            Toasty.error(getBaseContext(), "Select banner", Toast.LENGTH_SHORT).show();
             return false;
         } else if (romName.isEmpty()) {
-            Toast.makeText(getBaseContext(), "Please enter rom name", Toast.LENGTH_SHORT).show();
+            Toasty.error(getBaseContext(), "Enter the project name", Toast.LENGTH_SHORT).show();
             return false;
         } else if (aboutRom.isEmpty()) {
-            Toast.makeText(getBaseContext(), "Please enter about rom", Toast.LENGTH_SHORT).show();
+            Toasty.error(getBaseContext(), "Enter project description", Toast.LENGTH_SHORT).show();
             return false;
         } else if (stabilityStatus == null) {
-            Toast.makeText(getBaseContext(), "Please select stability status", Toast.LENGTH_SHORT).show();
+            Toasty.error(getBaseContext(), "Select project stability status", Toast.LENGTH_SHORT).show();
             return false;
         } else if (version == 0) {
-            Toast.makeText(getBaseContext(), "Please enter version name", Toast.LENGTH_SHORT).show();
+            Toasty.error(getBaseContext(), "Enter project version", Toast.LENGTH_SHORT).show();
             return false;
         } else if (url.isEmpty()) {
-            Toast.makeText(getBaseContext(), "Please enter rom url", Toast.LENGTH_SHORT).show();
+            Toasty.error(getBaseContext(), "Enter project download url", Toast.LENGTH_SHORT).show();
             return false;
         }
         else {
@@ -419,7 +420,7 @@ public class ActivityAddBuild extends AppCompatActivity implements View.OnClickL
                     btSubmit.setEnabled(false);
                     btSubmit.setProgress(50);
                 } else {
-                    Toast.makeText(getBaseContext(), "Please enter valid url", Toast.LENGTH_SHORT).show();
+                    Toasty.error(getBaseContext(), "Enter a valid url", Toast.LENGTH_SHORT).show();
                 }
             }
         } else if (id == imageViewBanner.getId()) {

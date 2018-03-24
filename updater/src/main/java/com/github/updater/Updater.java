@@ -8,6 +8,8 @@ import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.widget.Toast;
 
+import es.dmoral.toasty.Toasty;
+
 import static com.github.updater.JsonParser.changelog;
 import static com.github.updater.JsonParser.version;
 
@@ -41,7 +43,7 @@ public class Updater {
                             .setPositiveButton("Download", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
-                                    Toast.makeText(context,"Please wait starting download",Toast.LENGTH_SHORT).show();
+                                    Toasty.info(context,"Please wait starting download",Toast.LENGTH_SHORT).show();
                                     DownloadManager downloadManager = (DownloadManager) context.getSystemService(context.DOWNLOAD_SERVICE);
 
                                     DownloadManager.Request request = new DownloadManager.Request(FetchUpdateUri.url);
@@ -60,7 +62,7 @@ public class Updater {
                 }else {
                     if (Settings)
                     {
-                        Toast.makeText(context,"No updates were found",Toast.LENGTH_SHORT).show();
+                        Toasty.success(context,"No updates were found",Toast.LENGTH_SHORT).show();
                     }
                 }
             }
