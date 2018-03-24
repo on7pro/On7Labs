@@ -30,7 +30,7 @@ public class JsonParser extends AsyncTask<Void,Void,Void>{
         try {
             data = readUrl(uri);
             JSONObject jsonObject = new JSONObject(data);
-            JSONArray jsonArray= jsonObject.getJSONArray("TwrpBuilder");
+            JSONArray jsonArray= jsonObject.getJSONArray("On7Labs");
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObj = jsonArray.getJSONObject(i);
                 version= Integer.valueOf(jsonObj.get("version").toString());

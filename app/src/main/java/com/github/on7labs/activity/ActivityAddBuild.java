@@ -137,7 +137,7 @@ public class ActivityAddBuild extends AppCompatActivity implements View.OnClickL
                 loadImages(imageViewSS3,img3,3);
             if (img4!=null)
                 loadImages(imageViewSS4,img4,4);
-            if (img4!=null)
+            if (img5!=null)
                 loadImages(imageViewSS5,img5,5);
         }
 
