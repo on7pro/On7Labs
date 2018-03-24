@@ -78,18 +78,20 @@ public class ListBuildsCommon extends Fragment {
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         if (dataSnapshot.child("screenShot1").exists())
                         {
-                            holder.BindScreenShots(model.getScreenShots().getScreenShot1());
-                            if (dataSnapshot.child("screenShot1").exists() && dataSnapshot.child("screenShot2").exists())
+                            holder.BindScreenShots(dataSnapshot.child("screenShot1").getValue().toString());
+                            if (dataSnapshot.child("screenShot1").exists() 
+                                    && dataSnapshot.child("screenShot2").exists()
+                                    )
                             {
-                                holder.BindScreenShots(model.getScreenShots().getScreenShot1(),model.getScreenShots().getScreenShot2());
+                                holder.BindScreenShots(dataSnapshot.child("screenShot1").getValue().toString(),dataSnapshot.child("screenShot2").getValue().toString());
                                 if (dataSnapshot.child("screenShot1").exists()
                                         && dataSnapshot.child("screenShot2").exists()
                                         && dataSnapshot.child("screenShot3").exists())
                                 {
                                     holder.BindScreenShots(
-                                            model.getScreenShots().getScreenShot1(),
-                                            model.getScreenShots().getScreenShot2(),
-                                            model.getScreenShots().getScreenShot3()
+                                            dataSnapshot.child("screenShot1").getValue().toString(),
+                                            dataSnapshot.child("screenShot2").getValue().toString(),
+                                            dataSnapshot.child("screenShot3").getValue().toString()
                                     );
                                     if (dataSnapshot.child("screenShot1").exists()
                                             && dataSnapshot.child("screenShot2").exists()
@@ -97,10 +99,10 @@ public class ListBuildsCommon extends Fragment {
                                     && dataSnapshot.child("screenShot4").exists())
                                     {
                                         holder.BindScreenShots(
-                                                model.getScreenShots().getScreenShot1(),
-                                                model.getScreenShots().getScreenShot2(),
-                                                model.getScreenShots().getScreenShot3(),
-                                                model.getScreenShots().getScreenShot4()
+                                                dataSnapshot.child("screenShot1").getValue().toString(),
+                                                dataSnapshot.child("screenShot2").getValue().toString(),
+                                                dataSnapshot.child("screenShot3").getValue().toString(),
+                                                dataSnapshot.child("screenShot4").getValue().toString()
                                         );
                                         if (dataSnapshot.child("screenShot1").exists()
                                                 && dataSnapshot.child("screenShot2").exists()
@@ -110,11 +112,11 @@ public class ListBuildsCommon extends Fragment {
                                                 )
                                         {
                                             holder.BindScreenShots(
-                                                    model.getScreenShots().getScreenShot1(),
-                                                    model.getScreenShots().getScreenShot2(),
-                                                    model.getScreenShots().getScreenShot3(),
-                                                    model.getScreenShots().getScreenShot4(),
-                                                    model.getScreenShots().getScreenShot5()
+                                                    dataSnapshot.child("screenShot1").getValue().toString(),
+                                                    dataSnapshot.child("screenShot2").getValue().toString(),
+                                                    dataSnapshot.child("screenShot3").getValue().toString(),
+                                                    dataSnapshot.child("screenShot4").getValue().toString(),
+                                                    dataSnapshot.child("screenShot5").getValue().toString()
                                             );
                                         }
                                     }

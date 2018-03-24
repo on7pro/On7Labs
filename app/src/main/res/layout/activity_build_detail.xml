@@ -42,26 +42,31 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:orientation="horizontal"
-                    android:layout_height="100dp">
+                    android:layout_height="wrap_content">
                     <ImageView
                         android:layout_width="@dimen/image_ss_width"
+                        android:visibility="gone"
                         android:id="@+id/img_ss_1"
                         android:layout_height="@dimen/image_ss_hight" />
                     <ImageView
                         android:layout_width="@dimen/image_ss_width"
                         android:id="@+id/img_ss_2"
+                        android:visibility="gone"
                         android:layout_height="@dimen/image_ss_hight" />
                     <ImageView
                         android:layout_width="@dimen/image_ss_width"
                         android:id="@+id/img_ss_3"
+                        android:visibility="gone"
                         android:layout_height="@dimen/image_ss_hight" />
                     <ImageView
                         android:layout_width="@dimen/image_ss_width"
+                        android:visibility="gone"
                         android:id="@+id/img_ss_4"
                         android:layout_height="@dimen/image_ss_hight" />
                     <ImageView
                         android:layout_width="@dimen/image_ss_width"
                         android:id="@+id/img_ss_5"
+                        android:visibility="gone"
                         android:layout_height="@dimen/image_ss_hight" />
                 </LinearLayout>
 

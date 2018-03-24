@@ -169,22 +169,27 @@ public class ListBuildDetail extends AppCompatActivity implements View.OnClickLi
         });
         if (img1!=null)
         {
+            imageViewSS1.setVisibility(View.VISIBLE);
             LoadScreenShots(imageViewSS1,img1);
         }
         if (img2!=null)
         {
+            imageViewSS2.setVisibility(View.VISIBLE);
             LoadScreenShots(imageViewSS2,img2);
         }
         if (img3!=null)
         {
+            imageViewSS3.setVisibility(View.VISIBLE);
             LoadScreenShots(imageViewSS3,img3);
         }
         if (img4!=null)
         {
+            imageViewSS4.setVisibility(View.VISIBLE);
             LoadScreenShots(imageViewSS4,img4);
         }
         if (img5!=null)
         {
+            imageViewSS5.setVisibility(View.VISIBLE);
             LoadScreenShots(imageViewSS5,img5);
         }
         imageViewBanner.setOnClickListener(this);
