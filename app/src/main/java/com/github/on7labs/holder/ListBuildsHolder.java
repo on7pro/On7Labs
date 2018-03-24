@@ -30,6 +30,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import es.dmoral.toasty.Toasty;
+
 /**
  * Created by androidlover5842 on 21.3.2018.
  */
@@ -157,9 +159,7 @@ public class ListBuildsHolder extends RecyclerView.ViewHolder implements View.On
         DetailActivityIntent = new Intent(context, ListBuildDetail.class);
         AddBuildIntent=new Intent(context, ActivityAddBuild.class);
         storageReference = FirebaseStorage.getInstance().getReference().child(bannerUrl);
-        if (FirebaseAuth.getInstance().getCurrentUser().getEmail().equals(developerEmail)) {
-            cardView.setOnLongClickListener(this);
-        }
+        cardView.setOnLongClickListener(this);
         DetailActivityIntent.putExtra("name", name);
         DetailActivityIntent.putExtra("date", date);
         DetailActivityIntent.putExtra("developerName", developerName);
@@ -218,39 +218,43 @@ public class ListBuildsHolder extends RecyclerView.ViewHolder implements View.On
     public boolean onLongClick(View view) {
         final int id = view.getId();
         if (id == cardView.getId()) {
-            AlertDialog.Builder builderSingle = new AlertDialog.Builder(context);
+            if (FirebaseAuth.getInstance().getCurrentUser().getEmail().equals(developerEmail)) {
+                AlertDialog.Builder builderSingle = new AlertDialog.Builder(context);
 
-            final ArrayAdapter<String> arrayAdapter = new ArrayAdapter(context, android.R.layout.select_dialog_item);
-            arrayAdapter.add("Edit");
-            arrayAdapter.add("Delete");
-            builderSingle.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(final DialogInterface dialog, int which) {
-                    String strName = arrayAdapter.getItem(which);
-                    if (strName.equals("Edit")) {
-                        context.startActivity(AddBuildIntent);
-                    } else if (strName.equals("Delete")) {
-                        AlertDialog.Builder builderInner = new AlertDialog.Builder(context);
-                        builderInner.setMessage(name);
-                        builderInner.setTitle("Are you sure you want to delete this project ?");
-                        builderInner.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                FirebaseDatabase.getInstance().getReference(ref).child(key).removeValue();
-                                dialog.dismiss();
-                            }
-                        });
-                        builderInner.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                dialog.dismiss();
-                            }
-                        });
-                        builderInner.show();
+                final ArrayAdapter<String> arrayAdapter = new ArrayAdapter(context, android.R.layout.select_dialog_item);
+                arrayAdapter.add("Edit");
+                arrayAdapter.add("Delete");
+                builderSingle.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(final DialogInterface dialog, int which) {
+                        String strName = arrayAdapter.getItem(which);
+                        if (strName.equals("Edit")) {
+                            context.startActivity(AddBuildIntent);
+                        } else if (strName.equals("Delete")) {
+                            AlertDialog.Builder builderInner = new AlertDialog.Builder(context);
+                            builderInner.setMessage(name);
+                            builderInner.setTitle("Are you sure you want to delete this project ?");
+                            builderInner.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    FirebaseDatabase.getInstance().getReference(ref).child(key).removeValue();
+                                    dialog.dismiss();
+                                }
+                            });
+                            builderInner.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    dialog.dismiss();
+                                }
+                            });
+                            builderInner.show();
+                        }
                     }
-                }
-            });
-            builderSingle.show();
+                });
+                builderSingle.show();
+            }else {
+                Toasty.error(context,"You can't edit others post").show();
+            }
 
         }
         return false;
