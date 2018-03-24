@@ -10,6 +10,7 @@ import android.view.View;
 
 import com.github.on7labs.MainActivity;
 import com.github.on7labs.R;
+import com.github.on7labs.util.FirebaseDBInstance;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -22,6 +23,7 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.FirebaseDatabase;
 
 ;
 
@@ -36,7 +38,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         auth = FirebaseAuth.getInstance();
-
+        FirebaseDBInstance.getInstance();
         setContentView(R.layout.activity_login);
 
         gSignInButton = findViewById(R.id.google_signIn);
