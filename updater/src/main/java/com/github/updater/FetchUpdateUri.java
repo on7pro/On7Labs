@@ -32,7 +32,7 @@ public class FetchUpdateUri extends AsyncTask<Void,Void,Void> {
     @Override
     protected Void doInBackground(Void... voids)  {
 
-        String url = "https://api.github.com/repos/TwrpBuilder/TwrpBuilder/releases/latest";
+        String url = "https://api.github.com/repos/on7pro/On7Labs/releases/latest";
         String data = null;
         try {
             data = readUrl(url);
