@@ -54,6 +54,11 @@
                 android:layout_width="match_parent"
                 android:id="@+id/tv_dev_name"
                 android:layout_height="wrap_content" />
+            <android.support.design.widget.FloatingActionButton
+                android:layout_width="10dp"
+                android:layout_gravity="end"
+                android:id="@+id/fab_status"
+                android:layout_height="10dp" />
 
         </LinearLayout>
     </RelativeLayout>

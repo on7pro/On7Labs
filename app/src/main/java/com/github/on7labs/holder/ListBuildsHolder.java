@@ -1,10 +1,14 @@
 package com.github.on7labs.holder;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
@@ -52,6 +56,7 @@ public class ListBuildsHolder extends RecyclerView.ViewHolder implements View.On
     private Intent DetailActivityIntent;
     private Intent AddBuildIntent;
     private StorageReference storageReference;
+    private FloatingActionButton fabRomStatus;
 
     public ListBuildsHolder(View itemView, String ref, Context context) {
         super(itemView);
@@ -63,7 +68,7 @@ public class ListBuildsHolder extends RecyclerView.ViewHolder implements View.On
         imageViewBanner = itemView.findViewById(R.id.img_banner);
         textViewLoadingImage = itemView.findViewById(R.id.tv_loading);
         cardView = itemView.findViewById(R.id.cv_build);
-
+        fabRomStatus=itemView.findViewById(R.id.fab_status);
         cardView.setOnClickListener(this);
     }
 
@@ -113,6 +118,7 @@ public class ListBuildsHolder extends RecyclerView.ViewHolder implements View.On
         AddBuildIntent.putExtra("img5",screenShot5);
     }
 
+    @SuppressLint("ResourceAsColor")
     public void bind(String name,
                      String date,
                      String developerName,
@@ -137,6 +143,17 @@ public class ListBuildsHolder extends RecyclerView.ViewHolder implements View.On
         this.credits = credits;
         this.source = source;
         this.key = key;
+        if (status.equals("Stable"))
+            fabRomStatus.setBackgroundTintList(ColorStateList.valueOf(Color.GREEN));
+        if (status.equals("Beta"))
+            fabRomStatus.setBackgroundTintList(ColorStateList.valueOf(Color.BLUE));
+        if (status.equals("Alpha"))
+            fabRomStatus.setBackgroundTintList(ColorStateList.valueOf(Color.RED));
+        if (status.equals("Pre release"))
+            fabRomStatus.setBackgroundTintList(ColorStateList.valueOf(Color.YELLOW));
+        if (status.equals("Intial release"))
+            fabRomStatus.setBackgroundTintList(ColorStateList.valueOf(Color.LTGRAY));
+
         DetailActivityIntent = new Intent(context, ListBuildDetail.class);
         AddBuildIntent=new Intent(context, ActivityAddBuild.class);
         storageReference = FirebaseStorage.getInstance().getReference().child(bannerUrl);

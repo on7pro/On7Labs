@@ -26,6 +26,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import static com.github.on7labs.MainActivity.floatingActionButtonAddThread;
+
 /**
  * Created by androidlover5842 on 21.3.2018.
  */
@@ -159,6 +161,16 @@ public class ListBuildsCommon extends Fragment {
             layoutManager.setStackFromEnd(true);
         }
         lvBuilds.setLayoutManager(layoutManager);
+        lvBuilds.addOnScrollListener(new RecyclerView.OnScrollListener(){
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy){
+                if (dy > 0)
+                    floatingActionButtonAddThread.hide();
+                else if (dy < 0)
+                    floatingActionButtonAddThread.show();
+            }
+        });
+
         lvBuilds.setAdapter(adapter);
         if (savedInstanceState == null) {
             return v;

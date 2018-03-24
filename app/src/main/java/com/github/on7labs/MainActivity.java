@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity
     private Uri profileUrl;
     private ImageView imageViewProfile;
     private Toolbar toolbar;
-    private FloatingActionButton floatingActionButtonAddThread;
+    public static FloatingActionButton floatingActionButtonAddThread;
     private FirebaseDatabase firebaseDatabase;
 
     @Override
