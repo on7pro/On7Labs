@@ -20,8 +20,11 @@ import com.github.on7labs.holder.ListBuildsHolder;
 import com.github.on7labs.model.ListBuildModel;
 import com.github.on7labs.model.ScreenShots;
 import com.github.on7labs.util.FirebaseProgressBar;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 /**
  * Created by androidlover5842 on 21.3.2018.
@@ -66,10 +69,65 @@ public class ListBuildsCommon extends Fragment {
             }
 
             @Override
-            protected void onBindViewHolder(@NonNull ListBuildsHolder holder,
+            protected void onBindViewHolder(@NonNull final ListBuildsHolder holder,
                                             int position,
-                                            @NonNull ListBuildModel model) {
+                                            @NonNull final ListBuildModel model) {
                 String key = adapter.getRef(position).getKey();
+                getRef(position).child("screenShots").addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.child("screenShot1").exists())
+                        {
+                            holder.BindScreenShots(model.getScreenShots().getScreenShot1());
+                            if (dataSnapshot.child("screenShot1").exists() && dataSnapshot.child("screenShot2").exists())
+                            {
+                                holder.BindScreenShots(model.getScreenShots().getScreenShot1(),model.getScreenShots().getScreenShot2());
+                                if (dataSnapshot.child("screenShot1").exists()
+                                        && dataSnapshot.child("screenShot2").exists()
+                                        && dataSnapshot.child("screenShot3").exists())
+                                {
+                                    holder.BindScreenShots(
+                                            model.getScreenShots().getScreenShot1(),
+                                            model.getScreenShots().getScreenShot2(),
+                                            model.getScreenShots().getScreenShot3()
+                                    );
+                                    if (dataSnapshot.child("screenShot1").exists()
+                                            && dataSnapshot.child("screenShot2").exists()
+                                            && dataSnapshot.child("screenShot3").exists()
+                                    && dataSnapshot.child("screenShot4").exists())
+                                    {
+                                        holder.BindScreenShots(
+                                                model.getScreenShots().getScreenShot1(),
+                                                model.getScreenShots().getScreenShot2(),
+                                                model.getScreenShots().getScreenShot3(),
+                                                model.getScreenShots().getScreenShot4()
+                                        );
+                                        if (dataSnapshot.child("screenShot1").exists()
+                                                && dataSnapshot.child("screenShot2").exists()
+                                                && dataSnapshot.child("screenShot3").exists()
+                                                && dataSnapshot.child("screenShot4").exists()
+                                                && dataSnapshot.child("screenShot5").exists()
+                                                )
+                                        {
+                                            holder.BindScreenShots(
+                                                    model.getScreenShots().getScreenShot1(),
+                                                    model.getScreenShots().getScreenShot2(),
+                                                    model.getScreenShots().getScreenShot3(),
+                                                    model.getScreenShots().getScreenShot4(),
+                                                    model.getScreenShots().getScreenShot5()
+                                            );
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
                 holder.bind(
                         model.getName(),
                         model.getDate(),
@@ -82,13 +140,7 @@ public class ListBuildsCommon extends Fragment {
                         model.getVersion(),
                         model.getCredits(),
                         model.getSource(),
-                        key,
-                        model.getScreenShots().getScreenShot1(),
-                        model.getScreenShots().getScreenShot2(),
-                        model.getScreenShots().getScreenShot3(),
-                        model.getScreenShots().getScreenShot4(),
-                        model.getScreenShots().getScreenShot5()
-                );
+                        key);
             }
 
             @Override

@@ -167,7 +167,6 @@ public class ListBuildDetail extends AppCompatActivity implements View.OnClickLi
 
             }
         });
-        System.out.println("Hello "+img1);
         if (img1!=null)
         {
             LoadScreenShots(imageViewSS1,img1);
@@ -235,18 +234,24 @@ public class ListBuildDetail extends AppCompatActivity implements View.OnClickLi
             }
         }else if (id==imageViewSS1.getId())
         {
-            startActivity(new Intent(ListBuildDetail.this,ViewImage.class).putExtra("url",img1));
+            if (img1!=null) {
+                startActivity(new Intent(ListBuildDetail.this, ViewImage.class).putExtra("url", img1));
+            }
         }else if (id==imageViewSS2.getId())
         {
+            if (img2!=null)
             startActivity(new Intent(ListBuildDetail.this,ViewImage.class).putExtra("url",img2));
         }else if (id==imageViewSS3.getId())
         {
+            if (img3!=null)
             startActivity(new Intent(ListBuildDetail.this,ViewImage.class).putExtra("url",img3));
         }else if (id==imageViewSS4.getId())
         {
+            if (img4!=null)
             startActivity(new Intent(ListBuildDetail.this,ViewImage.class).putExtra("url",img4));
         }else if (id==imageViewSS5.getId())
         {
+            if (img5!=null)
             startActivity(new Intent(ListBuildDetail.this,ViewImage.class).putExtra("url",img5));
         }
     }

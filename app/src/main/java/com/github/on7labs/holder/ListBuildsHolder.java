@@ -73,6 +73,51 @@ public class ListBuildsHolder extends RecyclerView.ViewHolder implements View.On
         cardView.setOnClickListener(this);
     }
 
+    public void BindScreenShots(String screenShot1){
+        this.screenShot1=screenShot1;
+        DetailActivityIntent.putExtra("img1",screenShot1);
+    }
+
+    public void BindScreenShots(String screenShot1,String screenShot2){
+        this.screenShot1=screenShot1;
+        this.screenShot2=screenShot2;
+        DetailActivityIntent.putExtra("img1",screenShot1);
+        DetailActivityIntent.putExtra("img2",screenShot2);
+    }
+
+    public void BindScreenShots(String screenShot1,String screenShot2,String screenShot3){
+        this.screenShot1=screenShot1;
+        this.screenShot2=screenShot2;
+        this.screenShot3=screenShot3;
+        DetailActivityIntent.putExtra("img1",screenShot1);
+        DetailActivityIntent.putExtra("img2",screenShot2);
+        DetailActivityIntent.putExtra("img3",screenShot3);
+    }
+
+    public void BindScreenShots(String screenShot1,String screenShot2,String screenShot3,String screenShot4){
+        this.screenShot1=screenShot1;
+        this.screenShot2=screenShot2;
+        this.screenShot3=screenShot3;
+        this.screenShot4=screenShot4;
+        DetailActivityIntent.putExtra("img1",screenShot1);
+        DetailActivityIntent.putExtra("img2",screenShot2);
+        DetailActivityIntent.putExtra("img3",screenShot3);
+        DetailActivityIntent.putExtra("img4",screenShot4);
+    }
+
+    public void BindScreenShots(String screenShot1,String screenShot2,String screenShot3,String screenShot4,String screenShot5){
+        this.screenShot1=screenShot1;
+        this.screenShot2=screenShot2;
+        this.screenShot3=screenShot3;
+        this.screenShot4=screenShot4;
+        this.screenShot5=screenShot5;
+        DetailActivityIntent.putExtra("img1",screenShot1);
+        DetailActivityIntent.putExtra("img2",screenShot2);
+        DetailActivityIntent.putExtra("img3",screenShot3);
+        DetailActivityIntent.putExtra("img4",screenShot4);
+        DetailActivityIntent.putExtra("img5",screenShot5);
+    }
+
     public void bind(String name,
                      String date,
                      String developerName,
@@ -84,12 +129,7 @@ public class ListBuildsHolder extends RecyclerView.ViewHolder implements View.On
                      int version,
                      String credits,
                      String source,
-                     String key,
-                     String screenShot1,
-                     String screenShot2,
-                     String screenShot3,
-                     String screenShot4,
-                     String screenShot5) {
+                     String key) {
         this.name = name;
         this.date = date;
         this.developerEmail = developerEmail;
@@ -102,11 +142,6 @@ public class ListBuildsHolder extends RecyclerView.ViewHolder implements View.On
         this.credits = credits;
         this.source = source;
         this.key = key;
-        this.screenShot1=screenShot1;
-        this.screenShot2=screenShot2;
-        this.screenShot3=screenShot3;
-        this.screenShot4=screenShot4;
-        this.screenShot5=screenShot5;
         DetailActivityIntent = new Intent(context, ListBuildDetail.class);
         storageReference = FirebaseStorage.getInstance().getReference().child(bannerUrl);
         if (FirebaseAuth.getInstance().getCurrentUser().getEmail().equals(developerEmail)) {
@@ -123,11 +158,6 @@ public class ListBuildsHolder extends RecyclerView.ViewHolder implements View.On
         DetailActivityIntent.putExtra("credits", credits);
         DetailActivityIntent.putExtra("status", status);
         DetailActivityIntent.putExtra("source", source);
-        DetailActivityIntent.putExtra("img1",screenShot1);
-        DetailActivityIntent.putExtra("img2",screenShot2);
-        DetailActivityIntent.putExtra("img3",screenShot3);
-        DetailActivityIntent.putExtra("img4",screenShot4);
-        DetailActivityIntent.putExtra("img5",screenShot5);
 
         textViewDate.setText("Date" + colon + date);
         textViewName.setText("Rom Name" + colon + name);
