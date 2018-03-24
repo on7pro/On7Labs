@@ -112,6 +112,12 @@ public class ActivityAddBuild extends AppCompatActivity implements View.OnClickL
             editTextAboutRom.setText(aboutRom);
             editTextVersion.setText(String.valueOf(version));
             editTextUrl.setText(url);
+            img1=bundle.getString("img1");
+            img2=bundle.getString("img2");
+            img3=bundle.getString("img3");
+            img4=bundle.getString("img4");
+            img5=bundle.getString("img5");
+
             if (sourceCode != null) {
                 editTextSourceCode.setText(sourceCode);
             }
@@ -119,22 +125,19 @@ public class ActivityAddBuild extends AppCompatActivity implements View.OnClickL
                 editTextCredits.setText(Credits);
             }
             final String path = bundle.getString("bannerUrl");
-            Uri uri=Uri.parse(path);
-            final File localFile=new File(getCacheDir()+File.separator,uri.getLastPathSegment() );
-            firebaseStorage.getReference().child(path).getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                    Glide.with(getApplicationContext()).load(localFile).into(imageViewBanner);
-                    imgpath = localFile.getAbsolutePath();
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception exception) {
-                    // Handle any errors
-                }
-            });
-
-
+            loadImages(imageViewBanner,path,0);
+            if (img1!=null)
+            {
+                loadImages(imageViewSS1,img1,1);
+            }
+            if (img2!=null)
+                loadImages(imageViewSS2,img2,2);
+            if (img3!=null)
+                loadImages(imageViewSS3,img3,3);
+            if (img4!=null)
+                loadImages(imageViewSS4,img4,4);
+            if (img4!=null)
+                loadImages(imageViewSS5,img5,5);
         }
 
         fileListerDialog = FileListerDialog.createFileListerDialog(this);
@@ -179,6 +182,35 @@ public class ActivityAddBuild extends AppCompatActivity implements View.OnClickL
         imageViewSS3.setOnClickListener(this);
         imageViewSS4.setOnClickListener(this);
         imageViewSS5.setOnClickListener(this);
+    }
+
+    private void loadImages(final ImageView imageView, final String thatThingUrl, final int value){
+        Uri uri=Uri.parse(thatThingUrl);
+        final File localFile=new File(getCacheDir()+File.separator,uri.getLastPathSegment() );
+        firebaseStorage.getReference().child(thatThingUrl).getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                Glide.with(getApplicationContext()).load(localFile).into(imageView);
+                if (value==0)
+                    imgpath = localFile.getAbsolutePath();
+                else if (value==1)
+                    img1=thatThingUrl;
+                else if (value==2)
+                    img2=thatThingUrl;
+                else if (value==3)
+                    img3=thatThingUrl;
+                else if (value==4)
+                    img4=thatThingUrl;
+                else if (value==5)
+                    img5=thatThingUrl;
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle any errors
+            }
+        });
+
     }
 
     private void SelectScreenShots(final ImageView imageView, final int value){

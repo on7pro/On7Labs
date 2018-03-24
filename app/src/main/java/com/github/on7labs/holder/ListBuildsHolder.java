@@ -45,24 +45,18 @@ public class ListBuildsHolder extends RecyclerView.ViewHolder implements View.On
     private String source;
     private String status;
     private String key;
-    private String screenShot1;
-    private String screenShot2;
-    private String screenShot3;
-    private String screenShot4;
-    private String screenShot5;
-    private View v;
     private TextView textViewName, textViewDate, textViewDeveloperName, textViewLoadingImage;
     private ImageView imageViewBanner;
     private String colon = " : ";
     private CardView cardView;
     private Intent DetailActivityIntent;
+    private Intent AddBuildIntent;
     private StorageReference storageReference;
 
     public ListBuildsHolder(View itemView, String ref, Context context) {
         super(itemView);
         this.ref = ref;
         this.context = context;
-        this.v = itemView;
         textViewName = itemView.findViewById(R.id.tv_name);
         textViewDeveloperName = itemView.findViewById(R.id.tv_dev_name);
         textViewDate = itemView.findViewById(R.id.tv_date);
@@ -74,48 +68,49 @@ public class ListBuildsHolder extends RecyclerView.ViewHolder implements View.On
     }
 
     public void BindScreenShots(String screenShot1){
-        this.screenShot1=screenShot1;
         DetailActivityIntent.putExtra("img1",screenShot1);
+        AddBuildIntent.putExtra("img1",screenShot1);
     }
 
     public void BindScreenShots(String screenShot1,String screenShot2){
-        this.screenShot1=screenShot1;
-        this.screenShot2=screenShot2;
         DetailActivityIntent.putExtra("img1",screenShot1);
         DetailActivityIntent.putExtra("img2",screenShot2);
+        AddBuildIntent.putExtra("img1",screenShot1);
+        AddBuildIntent.putExtra("img2",screenShot2);
     }
 
     public void BindScreenShots(String screenShot1,String screenShot2,String screenShot3){
-        this.screenShot1=screenShot1;
-        this.screenShot2=screenShot2;
-        this.screenShot3=screenShot3;
         DetailActivityIntent.putExtra("img1",screenShot1);
         DetailActivityIntent.putExtra("img2",screenShot2);
         DetailActivityIntent.putExtra("img3",screenShot3);
+        AddBuildIntent.putExtra("img1",screenShot1);
+        AddBuildIntent.putExtra("img2",screenShot2);
+        AddBuildIntent.putExtra("img3",screenShot3);
+
     }
 
     public void BindScreenShots(String screenShot1,String screenShot2,String screenShot3,String screenShot4){
-        this.screenShot1=screenShot1;
-        this.screenShot2=screenShot2;
-        this.screenShot3=screenShot3;
-        this.screenShot4=screenShot4;
         DetailActivityIntent.putExtra("img1",screenShot1);
         DetailActivityIntent.putExtra("img2",screenShot2);
         DetailActivityIntent.putExtra("img3",screenShot3);
         DetailActivityIntent.putExtra("img4",screenShot4);
+        AddBuildIntent.putExtra("img1",screenShot1);
+        AddBuildIntent.putExtra("img2",screenShot2);
+        AddBuildIntent.putExtra("img3",screenShot3);
+        AddBuildIntent.putExtra("img4",screenShot4);
     }
 
     public void BindScreenShots(String screenShot1,String screenShot2,String screenShot3,String screenShot4,String screenShot5){
-        this.screenShot1=screenShot1;
-        this.screenShot2=screenShot2;
-        this.screenShot3=screenShot3;
-        this.screenShot4=screenShot4;
-        this.screenShot5=screenShot5;
         DetailActivityIntent.putExtra("img1",screenShot1);
         DetailActivityIntent.putExtra("img2",screenShot2);
         DetailActivityIntent.putExtra("img3",screenShot3);
         DetailActivityIntent.putExtra("img4",screenShot4);
         DetailActivityIntent.putExtra("img5",screenShot5);
+        AddBuildIntent.putExtra("img1",screenShot1);
+        AddBuildIntent.putExtra("img2",screenShot2);
+        AddBuildIntent.putExtra("img3",screenShot3);
+        AddBuildIntent.putExtra("img4",screenShot4);
+        AddBuildIntent.putExtra("img5",screenShot5);
     }
 
     public void bind(String name,
@@ -143,6 +138,7 @@ public class ListBuildsHolder extends RecyclerView.ViewHolder implements View.On
         this.source = source;
         this.key = key;
         DetailActivityIntent = new Intent(context, ListBuildDetail.class);
+        AddBuildIntent=new Intent(context, ActivityAddBuild.class);
         storageReference = FirebaseStorage.getInstance().getReference().child(bannerUrl);
         if (FirebaseAuth.getInstance().getCurrentUser().getEmail().equals(developerEmail)) {
             cardView.setOnLongClickListener(this);
@@ -158,6 +154,16 @@ public class ListBuildsHolder extends RecyclerView.ViewHolder implements View.On
         DetailActivityIntent.putExtra("credits", credits);
         DetailActivityIntent.putExtra("status", status);
         DetailActivityIntent.putExtra("source", source);
+        AddBuildIntent.putExtra("fromHolder", true);
+        AddBuildIntent.putExtra("name", name);
+        AddBuildIntent.putExtra("bannerUrl", bannerUrl);
+        AddBuildIntent.putExtra("description", description);
+        AddBuildIntent.putExtra("romUrl", romUrl);
+        AddBuildIntent.putExtra("version", version);
+        AddBuildIntent.putExtra("credits", credits);
+        AddBuildIntent.putExtra("status", status);
+        AddBuildIntent.putExtra("source", source);
+        AddBuildIntent.putExtra("key", key);
 
         textViewDate.setText("Date" + colon + date);
         textViewName.setText("Rom Name" + colon + name);
@@ -193,7 +199,7 @@ public class ListBuildsHolder extends RecyclerView.ViewHolder implements View.On
 
     @Override
     public boolean onLongClick(View view) {
-        int id = view.getId();
+        final int id = view.getId();
         if (id == cardView.getId()) {
             AlertDialog.Builder builderSingle = new AlertDialog.Builder(context);
 
@@ -205,19 +211,7 @@ public class ListBuildsHolder extends RecyclerView.ViewHolder implements View.On
                 public void onClick(final DialogInterface dialog, int which) {
                     String strName = arrayAdapter.getItem(which);
                     if (strName.equals("Edit")) {
-                        context.startActivity(
-                                new Intent(context, ActivityAddBuild.class)
-                                        .putExtra("fromHolder", true)
-                                        .putExtra("name", name)
-                                        .putExtra("bannerUrl", bannerUrl)
-                                        .putExtra("description", description)
-                                        .putExtra("romUrl", romUrl)
-                                        .putExtra("version", version)
-                                        .putExtra("credits", credits)
-                                        .putExtra("status", status)
-                                        .putExtra("source", source)
-                                        .putExtra("key", key)
-                        );
+                        context.startActivity(AddBuildIntent);
                     } else if (strName.equals("Delete")) {
                         AlertDialog.Builder builderInner = new AlertDialog.Builder(context);
                         builderInner.setMessage(name);
