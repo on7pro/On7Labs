@@ -1,0 +1,31 @@
+language: android
+android:
+  components:
+  - tools
+  - platform-tools
+  - build-tools-27.0.3
+  - android-27
+  - add-on
+  - extra
+licenses:
+- android-sdk-license-.+
+jdk:
+- oraclejdk8
+script: "./gradlew build"
+before_cache:
+- rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+- rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+cache:
+  directories:
+  - "$HOME/.gradle/caches/"
+  - "$HOME/.gradle/wrapper/"
+deploy:
+  skip_cleanup: true
+  provider: releases
+  api_key:
+    secure: taqnCq/p5b+ZwOuydVh21aOmiNfJoplDihQ8Cy4Dvnnpk8VD0L8ggzYEc44kb5VA74DryusSR3QNmnXpIhgIJvdCFsUrKLZuw2VkgYCHJzk1PpAJ0sOZ8XBikOrkPmlw1m/67OiX6me0p6kcPvrdxHZ5rxa5IJhTqfaHEu05FDExlSLz5vrQzQFPWqm0zLZrqfF2j0LE6tN44HOvP67j5cZxCDW4BF5hZeNzZjdEsiXVp3kYmCV9KIGoVb2CCFCOQsfCUNTl9HT42SQckGqYESwWF4d6lNiyETaQYX/Kb6lvB+me0wPX+9KTZ+vFcM91m+wxzRFsRRqUSVUYcJtNIo2+rd4expzZu0gOYRjSuAaiBZECELsTehL1VxB+2A36glJ3b/n4P+28rGouQPpf9Lau+opFhjJIjVzc8aG3Wn1a1RR4AU4oZpXpC9yn2jki0niUZrimgDGSair1Essd3RWk2YGyL0/L50BuUZae94smdnAr1tzkjt/lpU2QdxCHd6EdlWZ3H9h9y5OixRC6nHm8cnkybQM5Se0Zp35ZOblSMqxQTs3aLJm1RyNdOXh1Z7KeQE94Ger/5Ue7icgB+PUd67KwmDDeW9VFZcaUR+wReg1/jG35YfTYIFERMlKo31Y5BTbgbc2N2KZn/Epd9Q+X3Bdo+4gV1LCdb6NrUxk=
+  file: "./app/build/outputs/apk/release/app-release.apk"
+  on:
+    repo: on7pro/On7Labs
+before_install:
+- yes | sdkmanager "platforms;android-27"
