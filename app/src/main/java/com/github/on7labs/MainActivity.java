@@ -27,6 +27,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.github.on7labs.activity.ActivityAddBuild;
 import com.github.on7labs.activity.LoginActivity;
 import com.github.on7labs.fragment.CreditsFragment;
@@ -87,7 +88,7 @@ public class MainActivity extends AppCompatActivity
 
         textViewName.setText(name);
         textViewEmail.setText(email);
-        new ProfileTask().execute();
+        Glide.with(getApplicationContext()).load(profileUrl).into(imageViewProfile);
         navigationView.setNavigationItemSelectedListener(this);
         updateFrame(new FragmentHome(), getString(R.string.home));
         Query query = firebaseDatabase.getReference("Developers").orderByChild("email").equalTo(email);
@@ -212,29 +213,6 @@ public class MainActivity extends AppCompatActivity
         int id = view.getId();
         if (id == floatingActionButtonAddThread.getId()) {
             startActivity(new Intent(MainActivity.this, ActivityAddBuild.class).putExtra("formHolder", false));
-        }
-    }
-
-    private class ProfileTask extends AsyncTask<Void, Void, Void> {
-        private Bitmap bmp;
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            try {
-                URL url = new URL(profileUrl.toString());
-                bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-            imageViewProfile.setImageBitmap(bmp);
         }
     }
 }

@@ -51,7 +51,7 @@ public class ListBuildsHolder extends RecyclerView.ViewHolder implements View.On
     private String source;
     private String status;
     private String key;
-    private TextView textViewName, textViewDate, textViewDeveloperName, textViewLoadingImage;
+    private TextView textViewName, textViewDate, textViewDeveloperName;
     private ImageView imageViewBanner;
     private String colon = " : ";
     private CardView cardView;
@@ -68,7 +68,6 @@ public class ListBuildsHolder extends RecyclerView.ViewHolder implements View.On
         textViewDeveloperName = itemView.findViewById(R.id.tv_dev_name);
         textViewDate = itemView.findViewById(R.id.tv_date);
         imageViewBanner = itemView.findViewById(R.id.img_banner);
-        textViewLoadingImage = itemView.findViewById(R.id.tv_loading);
         cardView = itemView.findViewById(R.id.cv_build);
         fabRomStatus=itemView.findViewById(R.id.fab_status);
         cardView.setOnClickListener(this);
@@ -189,10 +188,8 @@ public class ListBuildsHolder extends RecyclerView.ViewHolder implements View.On
             @Override
             public void onSuccess(Uri uri) {
                 if (uri.toString() == null) {
-                    textViewLoadingImage.setVisibility(View.GONE);
                     imageViewBanner.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_no_thumbnail));
                 } else {
-                    textViewLoadingImage.setVisibility(View.GONE);
                     Glide.with(context.getApplicationContext())
                             .load(uri.toString())
                             .into(imageViewBanner);
