@@ -1,10 +1,8 @@
 package com.github.on7labs.activity;
 
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
@@ -35,7 +33,6 @@ import com.google.firebase.storage.UploadTask;
 import org.angmarch.views.NiceSpinner;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -49,6 +46,7 @@ import yogesh.firzen.filelister.OnFileSelectedListener;
  */
 
 public class ActivityAddBuild extends AppCompatActivity implements View.OnClickListener {
+    final List<String> iconList = new LinkedList<>(Arrays.asList("AOSP N", "AOSP O", "crDroid", "Resurrection Remix OS", "CyanogenMod", "LineageOS", "DarkNess reDefined"));
     private ActionProcessButton btSubmit;
     private ImageView imageViewBanner;
     private FirebaseStorage firebaseStorage;
@@ -65,7 +63,6 @@ public class ActivityAddBuild extends AppCompatActivity implements View.OnClickL
     private NiceSpinner niceSpinnerReleaseType;
     private boolean fromHolder;
     private Bundle bundle;
-    final List<String> iconList = new LinkedList<>(Arrays.asList("AOSP N", "AOSP O", "CrDroid", "Remix OS","Cyanogenmod","Lineage OS","Darkness Redefined"));
     private ImageView imageViewSS1,imageViewSS2,imageViewSS3,imageViewSS4,imageViewSS5;
     private String img1=null,img2=null,img3=null,img4=null,img5=null;
     @Override

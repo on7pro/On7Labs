@@ -49,6 +49,7 @@ import es.dmoral.toasty.Toasty;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
+    public static FloatingActionButton floatingActionButtonAddThread;
     private View NavView;
     private TextView textViewName, textViewEmail;
     private FirebaseAuth firebaseAuth;
@@ -56,13 +57,13 @@ public class MainActivity extends AppCompatActivity
     private Uri profileUrl;
     private ImageView imageViewProfile;
     private Toolbar toolbar;
-    public static FloatingActionButton floatingActionButtonAddThread;
     private FirebaseDatabase firebaseDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -180,6 +181,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
+//        (TextView) findViewById(id).colo
 
         if (id == R.id.nav_home) {
             updateFrame(new FragmentHome(), getString(R.string.home));

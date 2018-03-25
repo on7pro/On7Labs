@@ -12,4 +12,9 @@
     <string name="recovery">Recovery</string>
     <string name="mods">Mods</string>
     <string name="no_data">No data</string>
+    <string name="credits">Credits</string>
+    <string name="download">Download</string>
+    <string name="developed_by">Developed by</string>
+    <string name="on7_team">On7 Team</string>
+    <string name="loading_thumbnail">Loading thumbnail ...</string>
 </resources>

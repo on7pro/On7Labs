@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.github.on7labs.MainActivity"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context="com.github.on7labs.MainActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"

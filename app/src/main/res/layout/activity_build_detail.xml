@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:layout_height="match_parent">
 
     <ScrollView
         android:id="@+id/scrollView"
@@ -14,7 +13,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="16dp">
 
@@ -23,7 +22,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|top"
-                android:text="Loading thumbnail ..." />
+                android:text="@string/loading_thumbnail" />
 
             <ImageView
                 android:id="@+id/banner"
@@ -31,43 +30,50 @@
                 android:layout_height="150dp" />
 
             <io.square1.richtextlib.ui.RichContentView
-                android:padding="10dip"
                 android:id="@+id/rich_content"
-                android:autoLink="web"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:autoLink="web"
+                android:padding="10dip" />
+
             <HorizontalScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:orientation="horizontal"
-                    android:layout_height="wrap_content">
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
                     <ImageView
-                        android:layout_width="@dimen/image_ss_width"
-                        android:visibility="gone"
                         android:id="@+id/img_ss_1"
-                        android:layout_height="@dimen/image_ss_hight" />
-                    <ImageView
                         android:layout_width="@dimen/image_ss_width"
+                        android:layout_height="@dimen/image_ss_hight"
+                        android:visibility="gone" />
+
+                    <ImageView
                         android:id="@+id/img_ss_2"
-                        android:visibility="gone"
-                        android:layout_height="@dimen/image_ss_hight" />
-                    <ImageView
                         android:layout_width="@dimen/image_ss_width"
+                        android:layout_height="@dimen/image_ss_hight"
+                        android:visibility="gone" />
+
+                    <ImageView
                         android:id="@+id/img_ss_3"
-                        android:visibility="gone"
-                        android:layout_height="@dimen/image_ss_hight" />
-                    <ImageView
                         android:layout_width="@dimen/image_ss_width"
-                        android:visibility="gone"
+                        android:layout_height="@dimen/image_ss_hight"
+                        android:visibility="gone" />
+
+                    <ImageView
                         android:id="@+id/img_ss_4"
-                        android:layout_height="@dimen/image_ss_hight" />
-                    <ImageView
                         android:layout_width="@dimen/image_ss_width"
+                        android:layout_height="@dimen/image_ss_hight"
+                        android:visibility="gone" />
+
+                    <ImageView
                         android:id="@+id/img_ss_5"
-                        android:visibility="gone"
-                        android:layout_height="@dimen/image_ss_hight" />
+                        android:layout_width="@dimen/image_ss_width"
+                        android:layout_height="@dimen/image_ss_hight"
+                        android:visibility="gone" />
                 </LinearLayout>
 
             </HorizontalScrollView>
@@ -76,13 +82,13 @@
     </ScrollView>
 
     <Button
+        android:id="@+id/bt_rom_download"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:id="@+id/bt_rom_download"
         android:layout_alignParentStart="true"
         android:backgroundTint="@color/colorPrimary"
+        android:text="@string/download"
         android:textColor="@color/white"
-        android:theme="@style/ButtonTheme"
-        android:text="Download" />
+        android:theme="@style/ButtonTheme" />
 </RelativeLayout>

@@ -253,7 +253,7 @@ public class ListBuildsHolder extends RecyclerView.ViewHolder implements View.On
                 });
                 builderSingle.show();
             }else {
-                Toasty.error(context,"You can't edit others post").show();
+                Toasty.error(context, "You can't edit this post!").show();
             }
 
         }

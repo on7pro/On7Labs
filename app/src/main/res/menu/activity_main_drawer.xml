@@ -8,13 +8,14 @@
             android:id="@+id/nav_home"
             android:icon="@drawable/ic_home"
             android:title="@string/home" />
-        <item android:id="@+id/nav_credits"
+        <item
+            android:id="@+id/nav_credits"
             android:icon="@drawable/ic_developers"
-            android:title="Credits"/>
+            android:title="@string/credits" />
         <item
             android:id="@+id/nav_logout"
             android:icon="@drawable/ic_logout"
-            android:title="@string/logout"/>
+            android:title="@string/logout" />
 
     </group>
 
