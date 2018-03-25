@@ -181,7 +181,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
-//        (TextView) findViewById(id).colo
 
         if (id == R.id.nav_home) {
             updateFrame(new FragmentHome(), getString(R.string.home));

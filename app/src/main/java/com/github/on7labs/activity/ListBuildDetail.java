@@ -15,7 +15,6 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.github.on7labs.R;
-import com.github.on7labs.model.ScreenShots;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
@@ -41,7 +40,7 @@ public class ListBuildDetail extends AppCompatActivity implements View.OnClickLi
     private String source;
     private String status;
     // private TextView textViewName,textViewDate,textViewDeveloperName,textViewLoadingImage,textViewDescription,textViewDeveloperEmail;
-    private TextView textViewLoadingImage;
+    private TextView textViewLoadingImage, textViewNoSSFound;
     private ImageView imageViewBanner;
     private Bundle bundle;
     private String colon = " : ";
@@ -50,8 +49,8 @@ public class ListBuildDetail extends AppCompatActivity implements View.OnClickLi
     private RichContentView RichBuild;
     private String paragraph;
     private RichTextDocumentElement.TextBuilder element;
-    private ImageView imageViewSS1,imageViewSS2,imageViewSS3,imageViewSS4,imageViewSS5;
-    private String img1=null,img2=null,img3=null,img4=null,img5=null;
+    private ImageView imageViewSS1, imageViewSS2, imageViewSS3, imageViewSS4, imageViewSS5;
+    private String img1 = null, img2 = null, img3 = null, img4 = null, img5 = null;
 
 
     @Override
@@ -70,17 +69,18 @@ public class ListBuildDetail extends AppCompatActivity implements View.OnClickLi
         version = bundle.getInt("version");
         status = bundle.getString("status");
         source = bundle.getString("source");
-        img1=bundle.getString("img1");
-        img2=bundle.getString("img2");
-        img3=bundle.getString("img3");
-        img4=bundle.getString("img4");
-        img5=bundle.getString("img5");
+        img1 = bundle.getString("img1");
+        img2 = bundle.getString("img2");
+        img3 = bundle.getString("img3");
+        img4 = bundle.getString("img4");
+        img5 = bundle.getString("img5");
 
-        imageViewSS1=findViewById(R.id.img_ss_1);
-        imageViewSS2=findViewById(R.id.img_ss_2);
-        imageViewSS3=findViewById(R.id.img_ss_3);
-        imageViewSS4=findViewById(R.id.img_ss_4);
-        imageViewSS5=findViewById(R.id.img_ss_5);
+        imageViewSS1 = findViewById(R.id.img_ss_1);
+        imageViewSS2 = findViewById(R.id.img_ss_2);
+        imageViewSS3 = findViewById(R.id.img_ss_3);
+        imageViewSS4 = findViewById(R.id.img_ss_4);
+        imageViewSS5 = findViewById(R.id.img_ss_5);
+        textViewNoSSFound = findViewById(R.id.tv_no_ss_found);
 
         /*textViewName=findViewById(R.id.tv_name);
         textViewDeveloperName=findViewById(R.id.tv_dev_name);
@@ -167,30 +167,26 @@ public class ListBuildDetail extends AppCompatActivity implements View.OnClickLi
 
             }
         });
-        if (img1!=null)
-        {
+        if (img1 != null) {
+            textViewNoSSFound.setVisibility(View.GONE);
             imageViewSS1.setVisibility(View.VISIBLE);
-            LoadScreenShots(imageViewSS1,img1);
+            LoadScreenShots(imageViewSS1, img1);
         }
-        if (img2!=null)
-        {
+        if (img2 != null) {
             imageViewSS2.setVisibility(View.VISIBLE);
-            LoadScreenShots(imageViewSS2,img2);
+            LoadScreenShots(imageViewSS2, img2);
         }
-        if (img3!=null)
-        {
+        if (img3 != null) {
             imageViewSS3.setVisibility(View.VISIBLE);
-            LoadScreenShots(imageViewSS3,img3);
+            LoadScreenShots(imageViewSS3, img3);
         }
-        if (img4!=null)
-        {
+        if (img4 != null) {
             imageViewSS4.setVisibility(View.VISIBLE);
-            LoadScreenShots(imageViewSS4,img4);
+            LoadScreenShots(imageViewSS4, img4);
         }
-        if (img5!=null)
-        {
+        if (img5 != null) {
             imageViewSS5.setVisibility(View.VISIBLE);
-            LoadScreenShots(imageViewSS5,img5);
+            LoadScreenShots(imageViewSS5, img5);
         }
         imageViewBanner.setOnClickListener(this);
         imageViewSS1.setOnClickListener(this);
@@ -200,7 +196,7 @@ public class ListBuildDetail extends AppCompatActivity implements View.OnClickLi
         imageViewSS5.setOnClickListener(this);
     }
 
-    private void LoadScreenShots(final ImageView imageView,String ssUrl){
+    private void LoadScreenShots(final ImageView imageView, String ssUrl) {
 
         FirebaseStorage.getInstance().getReference().child(ssUrl).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
@@ -231,33 +227,26 @@ public class ListBuildDetail extends AppCompatActivity implements View.OnClickLi
         if (id == btRomUrl.getId()) {
             Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(romUrl));
             startActivity(browserIntent);
-        }else if(id==imageViewBanner.getId())
-        {
-            if (bannerUrl!=null)
-            {
-                startActivity(new Intent(ListBuildDetail.this,ViewImage.class).putExtra("url",bannerUrl));
+        } else if (id == imageViewBanner.getId()) {
+            if (bannerUrl != null) {
+                startActivity(new Intent(ListBuildDetail.this, ViewImage.class).putExtra("url", bannerUrl));
             }
-        }else if (id==imageViewSS1.getId())
-        {
-            if (img1!=null) {
+        } else if (id == imageViewSS1.getId()) {
+            if (img1 != null) {
                 startActivity(new Intent(ListBuildDetail.this, ViewImage.class).putExtra("url", img1));
             }
-        }else if (id==imageViewSS2.getId())
-        {
-            if (img2!=null)
-            startActivity(new Intent(ListBuildDetail.this,ViewImage.class).putExtra("url",img2));
-        }else if (id==imageViewSS3.getId())
-        {
-            if (img3!=null)
-            startActivity(new Intent(ListBuildDetail.this,ViewImage.class).putExtra("url",img3));
-        }else if (id==imageViewSS4.getId())
-        {
-            if (img4!=null)
-            startActivity(new Intent(ListBuildDetail.this,ViewImage.class).putExtra("url",img4));
-        }else if (id==imageViewSS5.getId())
-        {
-            if (img5!=null)
-            startActivity(new Intent(ListBuildDetail.this,ViewImage.class).putExtra("url",img5));
+        } else if (id == imageViewSS2.getId()) {
+            if (img2 != null)
+                startActivity(new Intent(ListBuildDetail.this, ViewImage.class).putExtra("url", img2));
+        } else if (id == imageViewSS3.getId()) {
+            if (img3 != null)
+                startActivity(new Intent(ListBuildDetail.this, ViewImage.class).putExtra("url", img3));
+        } else if (id == imageViewSS4.getId()) {
+            if (img4 != null)
+                startActivity(new Intent(ListBuildDetail.this, ViewImage.class).putExtra("url", img4));
+        } else if (id == imageViewSS5.getId()) {
+            if (img5 != null)
+                startActivity(new Intent(ListBuildDetail.this, ViewImage.class).putExtra("url", img5));
         }
     }
 
