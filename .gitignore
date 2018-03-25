@@ -11,3 +11,4 @@
 .idea/misc.xml
 app/release
 updater/build
+gradle.properties
