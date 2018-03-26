@@ -1,7 +1,6 @@
 package com.github.on7labs.activity;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -109,17 +108,6 @@ public class ListBuildDetail extends AppCompatActivity implements View.OnClickLi
         textViewProjectDesc.setText(description);
         element = new RichTextDocumentElement.TextBuilder("");
         element.bold()
-                .color(Color.BLUE)
-                .underline(true)
-                .sizeChange(1.5f)
-                .center()
-                .newLine()
-                .append("Notes" + colon)
-                .bold()
-                .newLine()
-                .append(description)
-                .newLine()
-                .newLine()
                 .append("status" + colon + status)
                 .bold()
                 .newLine()
