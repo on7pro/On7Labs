@@ -2,10 +2,7 @@ package com.github.on7labs;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -40,10 +37,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 
 import es.dmoral.toasty.Toasty;
 
@@ -188,6 +181,7 @@ public class MainActivity extends AppCompatActivity
         }
         else if (id==R.id.nav_credits)
         {
+            floatingActionButtonAddThread.setVisibility(View.INVISIBLE);
             updateFrame(new CreditsFragment(),"Contributors");
         }
         else if (id == R.id.nav_logout) {
