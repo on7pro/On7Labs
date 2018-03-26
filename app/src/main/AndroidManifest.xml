@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.github.on7labs">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -14,9 +14,8 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
-            android:label="@string/home"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".activity.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,9 +23,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.ListBuildDetail"/>
-        <activity android:name=".activity.ActivityAddBuild" android:label="Add Build"/>
-        <activity android:name=".activity.ViewImage"/>
+        <activity android:name=".activity.ListBuildDetail" />
+        <activity
+            android:name=".activity.ActivityAddBuild"
+            android:label="@string/add_build" />
+        <activity android:name=".activity.ViewImage" />
     </application>
 
 </manifest>

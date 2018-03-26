@@ -28,21 +28,26 @@
             android:hint="Project name"
             android:inputType="textPersonName" />
 
-        <org.angmarch.views.NiceSpinner
-            android:id="@+id/spinner_release_type"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="4dp" />
+            android:layout_margin="4dp"
+            android:orientation="horizontal">
 
-        <android.support.v4.widget.Space
-            android:layout_width="match_parent"
-            android:layout_height="10dp" />
+            <org.angmarch.views.NiceSpinner
+                android:id="@+id/spinner_release_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:layout_weight="1" />
 
-        <org.angmarch.views.NiceSpinner
-            android:id="@+id/spinner_release_status"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="4dp" />
+            <org.angmarch.views.NiceSpinner
+                android:id="@+id/spinner_release_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:layout_weight="1" />
+        </LinearLayout>
 
         <EditText
             android:id="@+id/ed_about_rom"
@@ -63,6 +68,15 @@
             android:maxLines="1"
             android:minLines="1" />
 
+        <!--<EditText-->
+        <!--android:id="@+id/ed_bugs"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_margin="4dp"-->
+        <!--android:hint="Known Bugs (optional)"-->
+        <!--android:inputType="text"-->
+        <!--android:maxLines="3" />-->
+
         <EditText
             android:id="@+id/ed_url"
             android:layout_width="match_parent"
@@ -77,7 +91,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
-            android:hint="source code (optional)"
+            android:hint="Source code (optional)"
             android:inputType="textUri"
             android:maxLines="1" />
 
@@ -86,7 +100,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
-            android:hint="credits (optional)"
+            android:hint="Credits (optional)"
             android:inputType="textPersonName"
             android:minLines="1" />
 
@@ -142,11 +156,11 @@
             android:layout_marginRight="4dp"
             android:layout_marginTop="8dp"
             android:text="Submit"
-            android:textColor="@android:color/white"
+            android:textColor="@color/secondaryTextColor"
             android:textSize="18sp"
             custom:pb_colorComplete="@color/green_complete"
             custom:pb_colorError="@color/red_error"
-            custom:pb_colorNormal="@color/colorPrimary"
+            custom:pb_colorNormal="@color/secondaryColor"
             custom:pb_colorPressed="@color/blue_pressed"
             custom:pb_colorProgress="@color/purple_progress"
             custom:pb_textComplete="Success"

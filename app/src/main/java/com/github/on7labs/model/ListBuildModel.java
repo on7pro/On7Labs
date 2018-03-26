@@ -16,6 +16,7 @@ public class ListBuildModel {
     private Integer version;
     private String status;
     private String source;
+    //    private String bugs;
     private ScreenShots screenShots;
 
     public ListBuildModel() {
@@ -77,99 +78,99 @@ public class ListBuildModel {
         this.screenShots=screenShots;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-    }
-
-    public void setDeveloperEmail(String developerEmail) {
-        this.developerEmail = developerEmail;
-    }
-
-    public void setBannerUrl(String bannerUrl) {
-        this.bannerUrl = bannerUrl;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public void setDeveloperName(String developerName) {
-        this.developerName = developerName;
-    }
-
-    public void setRomUrl(String romUrl) {
-        this.romUrl = romUrl;
-    }
-
-    public void setVersion(Integer version) {
-        this.version = version;
-    }
-
-    public void setCredits(String credits) {
-        this.credits = credits;
-    }
-
-    public void setSource(String source) {
-        this.source = source;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public void setScreenShots(ScreenShots screenShots) {
-        this.screenShots = screenShots;
-    }
-
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getDate() {
         return date;
     }
 
+    public void setDate(String date) {
+        this.date = date;
+    }
+
     public String getDeveloperEmail() {
         return developerEmail;
+    }
+
+    public void setDeveloperEmail(String developerEmail) {
+        this.developerEmail = developerEmail;
     }
 
     public String getBannerUrl() {
         return bannerUrl;
     }
 
+    public void setBannerUrl(String bannerUrl) {
+        this.bannerUrl = bannerUrl;
+    }
+
     public String getDescription() {
         return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getDeveloperName() {
         return developerName;
     }
 
+    public void setDeveloperName(String developerName) {
+        this.developerName = developerName;
+    }
+
     public String getRomUrl() {
         return romUrl;
+    }
+
+    public void setRomUrl(String romUrl) {
+        this.romUrl = romUrl;
     }
 
     public String getCredits() {
         return credits;
     }
 
+    public void setCredits(String credits) {
+        this.credits = credits;
+    }
+
     public String getSource() {
         return source;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
     }
 
     public String getStatus() {
         return status;
     }
 
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     public Integer getVersion() {
         return version;
     }
 
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
+
     public ScreenShots getScreenShots() {
         return screenShots;
+    }
+
+    public void setScreenShots(ScreenShots screenShots) {
+        this.screenShots = screenShots;
     }
 }

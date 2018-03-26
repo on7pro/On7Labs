@@ -40,7 +40,7 @@ public class ListBuildDetail extends AppCompatActivity implements View.OnClickLi
     private String source;
     private String status;
     // private TextView textViewName,textViewDate,textViewDeveloperName,textViewLoadingImage,textViewDescription,textViewDeveloperEmail;
-    private TextView textViewLoadingImage, textViewNoSSFound;
+    private TextView textViewLoadingImage;
     private ImageView imageViewBanner;
     private Bundle bundle;
     private String colon = " : ";
@@ -80,7 +80,11 @@ public class ListBuildDetail extends AppCompatActivity implements View.OnClickLi
         imageViewSS3 = findViewById(R.id.img_ss_3);
         imageViewSS4 = findViewById(R.id.img_ss_4);
         imageViewSS5 = findViewById(R.id.img_ss_5);
+
+        TextView textViewNoSSFound, textViewProjectTitle, textViewProjectDesc;
         textViewNoSSFound = findViewById(R.id.tv_no_ss_found);
+        textViewProjectTitle = findViewById(R.id.tv_project_title);
+        textViewProjectDesc = findViewById(R.id.tv_project_desc);
 
         /*textViewName=findViewById(R.id.tv_name);
         textViewDeveloperName=findViewById(R.id.tv_dev_name);
@@ -100,7 +104,10 @@ public class ListBuildDetail extends AppCompatActivity implements View.OnClickLi
         textViewDeveloperName.setText("Developer name"+colon+developerName);
         textViewDeveloperEmail.setText("developer email"+colon+developerEmail);
         textViewDescription.setText("description"+colon+"\n"+description);*/
-        element = new RichTextDocumentElement.TextBuilder(name);
+
+        textViewProjectTitle.setText(name);
+        textViewProjectDesc.setText(description);
+        element = new RichTextDocumentElement.TextBuilder("");
         element.bold()
                 .color(Color.BLUE)
                 .underline(true)
