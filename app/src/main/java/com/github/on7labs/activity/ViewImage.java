@@ -38,22 +38,26 @@ public class ViewImage extends Activity {
         photoView=findViewById(R.id.photo_view);
         progressBar=findViewById(R.id.progressBar);
         url=bundle.getString("url");
-        FirebaseStorage.getInstance().getReference().child(url).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-                progressBar.setVisibility(View.GONE);
-                Glide.with(getApplicationContext())
-                        .load(uri)
-                        .into(photoView);
 
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                progressBar.setVisibility(View.GONE);
-                photoView.setImageDrawable(getResources().getDrawable(R.drawable.ic_no_thumbnail,getTheme()));
+        Glide.with(getApplicationContext())
+                .load(FirebaseStorage.getInstance().getReference().child(url))
+                .listener(new RequestListener<Drawable>() {
+                    @Override
+                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                        progressBar.setVisibility(View.GONE);
+                        photoView.setImageDrawable(getResources().getDrawable(R.drawable.ic_no_thumbnail,getTheme()));
+                        return false;
+                    }
 
-            }
-        });
+                    @Override
+                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                        progressBar.setVisibility(View.GONE);
+
+                        return false;
+                    }
+                })
+                .into(photoView);
+
+
     }
 }
