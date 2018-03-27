@@ -3,9 +3,10 @@ package com.github.on7labs.adapter;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-
+import com.bumptech.glide.Glide;
 import com.github.on7labs.R;
 
 import org.json.JSONException;
@@ -31,6 +32,7 @@ public class CreditsAdapter extends GithubAdapterIDEA
 
         TextView text1 = convertView.findViewById(R.id.list_credits_name);
         TextView text2 = convertView.findViewById(R.id.list_credits_contributions);
+        ImageView imageViewGitDP = convertView.findViewById(R.id.civ_git_dp);
         JSONObject release = (JSONObject) getItem(position);
 
         try
@@ -40,6 +42,10 @@ public class CreditsAdapter extends GithubAdapterIDEA
 
             if (release.has("contributions"))
                 text2.setText(getContext().getString(R.string.contribution_counter_info, release.getInt("contributions")));
+
+            if (release.has("avatar_url"))
+                Glide.with(getContext()).load(release.getString("avatar_url")).into(imageViewGitDP);
+
 
         } catch (JSONException e)
         {

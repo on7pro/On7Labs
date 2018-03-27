@@ -46,7 +46,7 @@ import yogesh.firzen.filelister.OnFileSelectedListener;
  */
 
 public class ActivityAddBuild extends AppCompatActivity implements View.OnClickListener {
-    final List<String> iconList = new LinkedList<>(Arrays.asList("AOSP N", "AOSP O", "crDroid", "Resurrection Remix OS", "CyanogenMod", "LineageOS", "DarkNess reDefined"));
+    final List<String> iconList = new LinkedList<>(Arrays.asList("AOSP N", "AOSP O", "crDroid", "ResurrectionRemix OS", "CyanogenMod", "Lineage OS", "DarkNess reDefined", "TWRP"));
     private ActionProcessButton btSubmit;
     private ImageView imageViewBanner;
     private FirebaseStorage firebaseStorage;
@@ -54,8 +54,8 @@ public class ActivityAddBuild extends AppCompatActivity implements View.OnClickL
     private FirebaseAuth firebaseAuth;
     private FileListerDialog fileListerDialog;
     private int version = 0;
-    private String email, name, imgpath = "noimg", date, romName, aboutRom, stabilityStatus = "Stable", url, sourceCode, Credits, key, type="Rom";
-    private EditText editTextName, editTextAboutRom, editTextVersion, editTextUrl, editTextSourceCode, editTextCredits;
+    private String email, name, imgpath = "noimg", date, romName, aboutRom, bugs, stabilityStatus = "Stable", url, sourceCode, Credits, key, type = "Rom";
+    private EditText editTextName, editTextAboutRom, editTextVersion, editTextBugs, editTextUrl, editTextSourceCode, editTextCredits;
     private UploadTask uploadTask;
     private ListBuildModel listBuildModel;
     private ScreenShots screenShots;
@@ -78,6 +78,7 @@ public class ActivityAddBuild extends AppCompatActivity implements View.OnClickL
         editTextName = findViewById(R.id.ed_project_name);
         editTextAboutRom = findViewById(R.id.ed_about_rom);
         editTextVersion = findViewById(R.id.ed_version);
+//        editTextBugs = findViewById(R.id.ed_bugs);
         editTextUrl = findViewById(R.id.ed_url);
         editTextSourceCode = findViewById(R.id.ed_source_code);
         editTextCredits = findViewById(R.id.ed_credits);
@@ -103,6 +104,7 @@ public class ActivityAddBuild extends AppCompatActivity implements View.OnClickL
             url = bundle.getString("romUrl");
             Credits = bundle.getString("credits");
             version = bundle.getInt("version");
+//            bugs = bundle.getString("bugs");
             stabilityStatus = bundle.getString("status");
             sourceCode = bundle.getString("source");
             key = bundle.getString("key");
@@ -116,6 +118,9 @@ public class ActivityAddBuild extends AppCompatActivity implements View.OnClickL
             img4=bundle.getString("img4");
             img5=bundle.getString("img5");
 
+//            if (bugs != null) {
+//                editTextBugs.setText(bugs);
+//            }
             if (sourceCode != null) {
                 editTextSourceCode.setText(sourceCode);
             }
@@ -323,6 +328,7 @@ public class ActivityAddBuild extends AppCompatActivity implements View.OnClickL
             e.printStackTrace();
         }
         url = editTextUrl.getText().toString();
+//        bugs = editTextBugs.getText().toString();
         sourceCode = editTextSourceCode.getText().toString();
         Credits = editTextCredits.getText().toString();
         if (imgpath.equals("noimg")) {
