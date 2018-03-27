@@ -187,18 +187,14 @@ public class ListBuildsHolder extends RecyclerView.ViewHolder implements View.On
         storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
-                if (uri.toString() == null) {
-                    imageViewBanner.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_no_thumbnail));
-                } else {
                     Glide.with(context.getApplicationContext())
                             .load(uri.toString())
                             .into(imageViewBanner);
-                }
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-
+                imageViewBanner.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_no_thumbnail));
             }
         });
     }
