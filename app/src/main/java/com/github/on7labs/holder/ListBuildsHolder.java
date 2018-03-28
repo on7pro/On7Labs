@@ -186,6 +186,7 @@ public class ListBuildsHolder extends RecyclerView.ViewHolder implements View.On
         AddBuildIntent.putExtra("status", status);
         AddBuildIntent.putExtra("source", source);
         AddBuildIntent.putExtra("key", key);
+        AddBuildIntent.putExtra("type",ref);
 
         textViewDate.setText("Date" + colon + date);
         textViewName.setText("Rom Name" + colon + name);

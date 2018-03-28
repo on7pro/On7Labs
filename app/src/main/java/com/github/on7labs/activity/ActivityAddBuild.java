@@ -99,6 +99,9 @@ public class ActivityAddBuild extends AppCompatActivity implements View.OnClickL
         date = DateUtils.getDate();
         email = firebaseAuth.getCurrentUser().getEmail();
         name = firebaseAuth.getCurrentUser().getDisplayName();
+        niceSpinnerReleaseStatus.attachDataSource(releaseStatusList);
+        niceSpinnerReleaseType.attachDataSource(releaseType);
+
         if (fromHolder) {
             romName = bundle.getString("name");
             aboutRom = bundle.getString("description");
@@ -118,6 +121,7 @@ public class ActivityAddBuild extends AppCompatActivity implements View.OnClickL
             img3=bundle.getString("img3");
             img4=bundle.getString("img4");
             img5=bundle.getString("img5");
+            type=bundle.getString("type");
 
 //            if (bugs != null) {
 //                editTextBugs.setText(bugs);
@@ -142,6 +146,29 @@ public class ActivityAddBuild extends AppCompatActivity implements View.OnClickL
                 loadImages(imageViewSS4,img4,4);
             if (img5!=null)
                 loadImages(imageViewSS5,img5,5);
+            if (stabilityStatus!=null)
+            {
+                for(int i=0;i<releaseStatusList.size();i++)
+                {
+                    if (releaseStatusList.get(i).equals(stabilityStatus))
+                    {
+                        niceSpinnerReleaseStatus.setSelectedIndex(i);
+                        break;
+                    }
+                }
+            }
+
+            if (type!=null)
+            {
+                for(int i=0;i<releaseType.size();i++)
+                {
+                    if (releaseType.get(i).equals(type))
+                    {
+                        niceSpinnerReleaseType.setSelectedIndex(i);
+                        break;
+                    }
+                }
+            }
         }
 
         fileListerDialog = FileListerDialog.createFileListerDialog(this);
@@ -160,8 +187,6 @@ public class ActivityAddBuild extends AppCompatActivity implements View.OnClickL
             }
         });
 
-        niceSpinnerReleaseStatus.attachDataSource(releaseStatusList);
-        niceSpinnerReleaseType.attachDataSource(releaseType);
         niceSpinnerReleaseStatus.addOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
