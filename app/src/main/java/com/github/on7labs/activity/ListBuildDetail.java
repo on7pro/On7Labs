@@ -43,15 +43,11 @@ public class ListBuildDetail extends AppCompatActivity implements View.OnClickLi
     private String credit;
     private String source;
     private String status;
-    // private TextView textViewName,textViewDate,textViewDeveloperName,textViewLoadingImage,textViewDescription,textViewDeveloperEmail;
-    private TextView textViewLoadingImage;
     private ImageView imageViewBanner;
     private Bundle bundle;
     private String colon = " : ";
     private Button btRomUrl;
-    private StorageReference storageReference;
     private RichContentView RichBuild;
-    private String paragraph;
     private RichTextDocumentElement.TextBuilder element;
     private ImageView imageViewSS1, imageViewSS2, imageViewSS3, imageViewSS4, imageViewSS5;
     private String img1 = null, img2 = null, img3 = null, img4 = null, img5 = null;
@@ -90,24 +86,10 @@ public class ListBuildDetail extends AppCompatActivity implements View.OnClickLi
         textViewProjectTitle = findViewById(R.id.tv_project_title);
         textViewProjectDesc = findViewById(R.id.tv_project_desc);
 
-        /*textViewName=findViewById(R.id.tv_name);
-        textViewDeveloperName=findViewById(R.id.tv_dev_name);
-        textViewDate=findViewById(R.id.tv_date);
-        textViewDescription=findViewById(R.id.tv_description);
-        textViewDeveloperEmail=findViewById(R.id.tv_dev_email);*/
-        textViewLoadingImage = findViewById(R.id.tv_loading);
         RichBuild = findViewById(R.id.rich_content);
 
         imageViewBanner = findViewById(R.id.banner);
         btRomUrl = findViewById(R.id.bt_rom_download);
-        storageReference = FirebaseStorage.getInstance().getReference().child(bannerUrl);
-        paragraph = "\n";
-
-        /*textViewDate.setText("Date"+colon+date);
-        textViewName.setText("Rom Name"+colon+name);
-        textViewDeveloperName.setText("Developer name"+colon+developerName);
-        textViewDeveloperEmail.setText("developer email"+colon+developerEmail);
-        textViewDescription.setText("description"+colon+"\n"+description);*/
 
         textViewProjectTitle.setText(name);
         textViewProjectDesc.setText(description);
@@ -147,26 +129,7 @@ public class ListBuildDetail extends AppCompatActivity implements View.OnClickLi
         RichBuild.setText(element.build());
 
         btRomUrl.setOnClickListener(this);
-        storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-                if (uri.toString() == null) {
-                    textViewLoadingImage.setVisibility(View.GONE);
-                    imageViewBanner.setImageDrawable(ContextCompat.getDrawable(ListBuildDetail.this, R.drawable.ic_no_thumbnail));
-                } else {
-                    textViewLoadingImage.setVisibility(View.GONE);
-                    Glide.with(getApplicationContext())
-                            .load(uri.toString())
-                            .into(imageViewBanner);
-                }
-
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-
-            }
-        });
+        LoadScreenShots(imageViewBanner,bannerUrl);
         if (img1 != null) {
             textViewNoSSFound.setVisibility(View.GONE);
             imageViewSS1.setVisibility(View.VISIBLE);

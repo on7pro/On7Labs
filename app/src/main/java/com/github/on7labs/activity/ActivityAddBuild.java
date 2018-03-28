@@ -28,6 +28,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import org.angmarch.views.NiceSpinner;
@@ -189,30 +190,36 @@ public class ActivityAddBuild extends AppCompatActivity implements View.OnClickL
 
     private void loadImages(final ImageView imageView, final String thatThingUrl, final int value){
         Uri uri=Uri.parse(thatThingUrl);
+        StorageReference storageReference=firebaseStorage.getReference().child(thatThingUrl);
         final File localFile=new File(getCacheDir()+File.separator,uri.getLastPathSegment() );
-        firebaseStorage.getReference().child(thatThingUrl).getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                Glide.with(getApplicationContext()).load(localFile).into(imageView);
-                if (value==0)
-                    imgpath = localFile.getAbsolutePath();
-                else if (value==1)
-                    img1=thatThingUrl;
-                else if (value==2)
-                    img2=thatThingUrl;
-                else if (value==3)
-                    img3=thatThingUrl;
-                else if (value==4)
-                    img4=thatThingUrl;
-                else if (value==5)
-                    img5=thatThingUrl;
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                // Handle any errors
-            }
-        });
+        if (value==0) {
+            storageReference.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                    Glide.with(getApplicationContext()).load(localFile).into(imageView);
+                        imgpath = localFile.getAbsolutePath();
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    // Handle any errors
+                }
+            });
+        }
+        else {
+            if (value == 1)
+                img1 = thatThingUrl;
+            else if (value == 2)
+                img2 = thatThingUrl;
+            else if (value == 3)
+                img3 = thatThingUrl;
+            else if (value == 4)
+                img4 = thatThingUrl;
+            else if (value == 5)
+                img5 = thatThingUrl;
+            Glide.with(getApplicationContext()).load(storageReference).into(imageView);
+
+        }
 
     }
 

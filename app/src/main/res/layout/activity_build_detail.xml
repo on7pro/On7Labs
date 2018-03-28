@@ -25,22 +25,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-                    <TextView
-                        android:id="@+id/tv_loading"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentStart="true"
-                        android:layout_gravity="center|top"
-                        android:paddingTop="64dp"
-                        android:text="@string/loading_thumbnail"
-                        android:textAlignment="center"
-                        android:textColor="@color/primaryLightColor"
-                        android:textSize="16sp"
-                        android:textStyle="italic|bold" />
-
                     <ImageView
                         android:id="@+id/banner"
                         android:layout_width="match_parent"
+                        android:src="@drawable/ic_banner"
                         android:layout_height="150dp"
                         android:layout_alignParentStart="true"
                         android:layout_marginTop="8dp" />
@@ -122,6 +110,7 @@
                                     android:id="@+id/img_ss_1"
                                     android:layout_width="@dimen/image_ss_width"
                                     android:layout_height="@dimen/image_ss_hight"
+                                    android:src="@drawable/ic_banner"
                                     android:visibility="gone" />
                             </android.support.v7.widget.CardView>
 
@@ -132,6 +121,7 @@
                                 <ImageView
                                     android:id="@+id/img_ss_2"
                                     android:layout_width="@dimen/image_ss_width"
+                                    android:src="@drawable/ic_banner"
                                     android:layout_height="@dimen/image_ss_hight"
                                     android:visibility="gone" />
                             </android.support.v7.widget.CardView>
@@ -145,6 +135,7 @@
                                     android:id="@+id/img_ss_3"
                                     android:layout_width="@dimen/image_ss_width"
                                     android:layout_height="@dimen/image_ss_hight"
+                                    android:src="@drawable/ic_banner"
                                     android:visibility="gone" />
                             </android.support.v7.widget.CardView>
 
@@ -155,6 +146,7 @@
                                 <ImageView
                                     android:id="@+id/img_ss_4"
                                     android:layout_width="@dimen/image_ss_width"
+                                    android:src="@drawable/ic_banner"
                                     android:layout_height="@dimen/image_ss_hight"
                                     android:visibility="gone" />
                             </android.support.v7.widget.CardView>
@@ -166,6 +158,7 @@
                                 <ImageView
                                     android:id="@+id/img_ss_5"
                                     android:layout_width="@dimen/image_ss_width"
+                                    android:src="@drawable/ic_banner"
                                     android:layout_height="@dimen/image_ss_hight"
                                     android:visibility="gone" />
                             </android.support.v7.widget.CardView>
