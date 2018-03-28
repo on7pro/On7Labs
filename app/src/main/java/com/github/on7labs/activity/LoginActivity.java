@@ -1,5 +1,6 @@
 package com.github.on7labs.activity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -26,7 +27,7 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.FirebaseDatabase;
 
 ;
-
+@SuppressLint("RestrictedApi")
 public class LoginActivity extends AppCompatActivity {
 
     private FirebaseAuth auth;
